@@ -47,5 +47,5 @@ func (e eth) Init() {
 }
 
 func (e eth) Start() {
-	general.RunCMD(e.binPath, "--datadir", e.nodePath, "--networkid", "20190723", "--rpcapi", "eth,web3,admin", "--rpc", "--unlock", "0", "--password", e.nodePath+"/password")
+	general.RunCMD(e.binPath, "--datadir", e.nodePath, "--networkid", "20190723", "--rpcapi", "eth,web3,admin", "--rpc", "--unlock", "0", "--password", e.nodePath+"/password", "--mine")
 }

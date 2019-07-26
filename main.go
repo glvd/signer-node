@@ -4,7 +4,6 @@ import (
 	"signerNode/src/eth"
 	"signerNode/src/ipfs"
 	"signerNode/assets"
-	"signerNode/src/sync"
 	"os"
 	"path/filepath"
 )
@@ -19,7 +18,7 @@ func main() {
 
 	// start ipfs client
 	ipfsClient := ipfs.NewIpfs()
-	go ipfsClient.Start()
+	ipfsClient.Start()
 }
 
 func restoreAssets() {

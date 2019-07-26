@@ -8,13 +8,6 @@ import (
 	"net/http"
 )
 
-// Admin ...
-type Admin interface {
-	AddPeer(urls []string)
-	Peers()
-	NodeInfo()
-}
-
 // AddPeer ...
 func AddPeer(urls []string) (interface{}, error) {
 	var result interface{}
