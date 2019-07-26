@@ -1,0 +1,4 @@
+assets/
+*.exe
+node/
+bin/
