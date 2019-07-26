@@ -3,7 +3,7 @@ package eth
 import (
 	"log"
 
-	AccelerateNode "accelerateNode/src/contract"
+	AccelerateNode "signerNode/src/contract"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"

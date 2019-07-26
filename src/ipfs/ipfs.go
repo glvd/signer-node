@@ -24,7 +24,7 @@ func NewIpfs() Ipfser {
 	if sys == "windows" {
 		bin, err = general.PathParse("/bin/ipfs_win.exe")
 	} else if sys == "linux" {
-		bin, err = general.PathParse("/bin/ipfs_linux")
+		bin, err = "ipfs", nil
 	} else {
 		fmt.Println("os not match")
 	}
@@ -36,5 +36,6 @@ func NewIpfs() Ipfser {
 }
 
 func (i ipfs) Start() {
+	general.RunCMD(i.binPath, "bootstrap", "rm", "all")
 	general.RunCMD(i.binPath, "daemon", "--init", "--migrate=true")
 }

@@ -20,8 +20,6 @@ func main() {
 	// start ipfs client
 	ipfsClient := ipfs.NewIpfs()
 	go ipfsClient.Start()
-	ipfs.BootstrapRmAll()
-	sync.EthNodeSync()
 }
 
 func restoreAssets() {
@@ -29,7 +27,7 @@ func restoreAssets() {
 	isSuccess := true
 	for _, dir := range dirs {
 		// 解压dir目录到当前目录
-		if err := asset.RestoreAssets("./assets/", dir); err != nil {
+		if err := asset.RestoreAssets("./", dir); err != nil {
 			isSuccess = false
 			break
 		}

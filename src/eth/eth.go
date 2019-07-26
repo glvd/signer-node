@@ -29,7 +29,7 @@ func NewEth() Ether {
 	if sys == "windows" {
 		bin, err = general.PathParse("/bin/geth_win.exe")
 	} else if sys == "linux" {
-		bin, err = general.PathParse("/bin/geth_linux")
+		bin, err = "geth", nil
 	} else {
 		fmt.Println("os not match")
 	}
@@ -42,9 +42,10 @@ func NewEth() Ether {
 }
 
 func (e eth) Init() {
+	fmt.Println("path", e.binPath)
 	general.RunCMD(e.binPath, "--datadir", e.nodePath, "init", e.genesisPath)
 }
 
 func (e eth) Start() {
-	general.RunCMD(e.binPath, "--datadir", e.nodePath, "--networkid", "20190723", "--rpcapi", "eth,web3,admin", "--rpc", "--unlock", "\"0\"", "--password", e.nodePath+"/password")
+	general.RunCMD(e.binPath, "--datadir", e.nodePath, "--networkid", "20190723", "--rpcapi", "eth,web3,admin", "--rpc", "--unlock", "0", "--password", e.nodePath+"/password")
 }

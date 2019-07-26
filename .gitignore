@@ -2,3 +2,4 @@ assets/
 *.exe
 node/
 bin/
+signerNode
