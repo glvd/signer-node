@@ -47,5 +47,10 @@ func (e eth) Init() {
 }
 
 func (e eth) Start() {
-	general.RunCMD(e.binPath, "--datadir", e.nodePath, "--networkid", "20190723", "--rpcapi", "eth,web3,admin", "--rpc", "--unlock", "0", "--password", e.nodePath+"/password", "--mine")
+	var sys = runtime.GOOS
+	if sys == "windows" {
+		general.RunCMD(e.binPath, "--datadir", e.nodePath, "--networkid", "20190723", "--rpc", "--rpcaddr", "0.0.0.0", "--rpccorsdomain", "*", "--rpcapi", "eth,web3,admin,net", "--unlock", "0", "--password", e.nodePath+"/password", "--mine")
+	} else {
+		general.RunCMD(e.binPath, "--datadir", e.nodePath, "--networkid", "20190723", "--rpc", "--rpcaddr", "0.0.0.0", "--rpccorsdomain", "*", "--rpcapi", "eth,web3,admin,net", "--allow-insecure-unlock", "--unlock", "0", "--password", e.nodePath+"/password", "--mine")
+	}
 }

@@ -18,16 +18,16 @@ func RunCMD(name string, args ...string) *exec.Cmd {
 			buf := make([]byte, 1024)
 			n, err := stderr.Read(buf)
 
-			if n > 0 {
-				log.Printf("READ OUT %s", string(buf[:n]))
-			}
+			// if n > 0 {
+			// 	log.Printf("[CMD OUT] %s", string(buf[:n]))
+			// }
 
 			if n == 0 {
 				break
 			}
 
 			if err != nil {
-				log.Printf("READ OUT %v", err)
+				log.Printf("[CMD ERROR] %v", err)
 				return
 			}
 		}
@@ -41,16 +41,16 @@ func RunCMD(name string, args ...string) *exec.Cmd {
 				break
 			}
 
-			if n > 0 {
-				log.Printf("read out %s", string(buf[:n]))
-			}
+			// if n > 0 {
+			// 	log.Printf("[CMD OUT] %s", string(buf[:n]))
+			// }
 
 			if n == 0 {
 				break
 			}
 
 			if err != nil {
-				log.Printf("read out %v", err)
+				log.Printf("[CMD ERROR]%v", err)
 				return
 			}
 
