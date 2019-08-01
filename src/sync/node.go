@@ -75,6 +75,7 @@ func IpfsSync() {
 		ipfsAddr := peer.Addr + "/" + peer.Peer
 		peers = append(peers, ipfsAddr)
 	}
+	fmt.Println("<---------------当前IPFS节点个数: ", len(peers), "------------->")
 	// sync ipfs swarm nodes
 	if len(peers) > 0 {
 		cl := eth.ContractLoader()
@@ -88,6 +89,7 @@ func IpfsSync() {
 			fmt.Println("<--------------------添加节点成功-------------------->")
 		}
 	}
+	fmt.Println("<--------------------IPFS同步完成-------------------->")
 	return
 }
 

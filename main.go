@@ -25,23 +25,20 @@ func main() {
 
 	// start sync schedule task
 	gocron.Every(30).Seconds().Do(sync.EthNodeSync)
+	gocron.Every(30).Seconds().Do(sync.IpfsSync)
 	gocron.Start()
 	
 	// start udp listening
 	fmt.Println("[Listening UDP Port 6067]")
 	listener, _ := net.ListenUDP("udp", &net.UDPAddr{IP: net.IPv4zero, Port: 6067})
-	
+
+	// start ipfs client
+	ipfsClient := ipfs.NewIpfs()
+	go ipfsClient.Start()
 	// NAT mapping service
 	for udpstart {
 		listenUDP(listener)
 	}
-
-	// start ipfs client
-	ipfsClient := ipfs.NewIpfs()
-	ipfsClient.Start()
-
-	// exit
-	udpstart = false
 }
 
 func listenUDP(listener *net.UDPConn) {

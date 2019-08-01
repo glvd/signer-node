@@ -18,9 +18,9 @@ func RunCMD(name string, args ...string) *exec.Cmd {
 			buf := make([]byte, 1024)
 			n, err := stderr.Read(buf)
 
-			// if n > 0 {
-			// 	log.Printf("[CMD OUT] %s", string(buf[:n]))
-			// }
+			if n > 0 {
+				log.Printf("[CMD OUT] %s", string(buf[:n]))
+			}
 
 			if n == 0 {
 				break
@@ -41,9 +41,9 @@ func RunCMD(name string, args ...string) *exec.Cmd {
 				break
 			}
 
-			// if n > 0 {
-			// 	log.Printf("[CMD OUT] %s", string(buf[:n]))
-			// }
+			if n > 0 {
+				log.Printf("[CMD OUT] %s", string(buf[:n]))
+			}
 
 			if n == 0 {
 				break

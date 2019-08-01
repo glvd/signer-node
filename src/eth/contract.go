@@ -14,7 +14,7 @@ import (
 )
 
 const keyStore = `{"address":"54c0fa4a3d982656c51fe7dfbdcc21923a7678cb","crypto":{"cipher":"aes-128-ctr","ciphertext":"a8552eef06ae970cd45d27350d6fa910bc9e492d95d41eab980cd8d849cada3b","cipherparams":{"iv":"6e189a9b631710587b704dd62e1fa8c4"},"kdf":"scrypt","kdfparams":{"dklen":32,"n":262144,"p":1,"r":8,"salt":"c57af43e0822709eb04a0d13ce63ca71f147ec40c6ed7a225042a705aa37b16f"},"mac":"b4308156d0b54096d21f51ad831eb18ff9a067e866da9c63685f9ef8ac2483e2"},"id":"fbec8deb-015e-4db2-8a89-43e784618cf4","version":3}`
-const nodeAddr = "0xa621a6e92753b6efcf113a23d44cf3c2f6f91783"
+const nodeAddr = "0xc2453b123aef2de3ad7505fabefb7146467003a7"
 const videoAddr = "0x16e372d7a3057f2e0aa977f47232c3b4bd100dc4"
 
 type contract struct {
