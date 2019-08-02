@@ -26,7 +26,7 @@ func main() {
 	// start sync schedule task
 	gocron.Every(30).Seconds().Do(sync.EthNodeSync)
 	gocron.Every(30).Seconds().Do(sync.IpfsSync)
-	gocron.Start()
+	go gocron.Start()
 	
 	// start udp listening
 	fmt.Println("[Listening UDP Port 6067]")
