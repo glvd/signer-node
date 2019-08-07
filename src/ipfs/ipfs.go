@@ -53,5 +53,6 @@ func (i ipfs) Start() {
 	general.RunCMD(i.binPath, "init")
 	fmt.Println("Starting IPFS Node")
 	general.RunCMD(i.binPath, "config", "Swarm.EnableAutoNATService", "--bool", "true")
+	general.RunCMD(i.binPath, "config", "Swarm.EnableRelayHop", "--bool", "true")
 	general.RunCMD(i.binPath, "daemon", "--routing", "none")
 }

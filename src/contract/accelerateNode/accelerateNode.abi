@@ -1,65 +1,67 @@
 [
 	{
+		"constant": true,
+		"inputs": [],
+		"name": "getPublicIpfsNodes",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"constant": false,
 		"inputs": [
 			{
-				"internalType": "string[]",
 				"name": "nodes",
 				"type": "string[]"
 			}
 		],
 		"name": "addEthNodes",
-		"outputs": [
-			{
-				"internalType": "string[]",
-				"name": "",
-				"type": "string[]"
-			}
-		],
+		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
 		"constant": false,
-		"inputs": [
-			{
-				"internalType": "string[]",
-				"name": "nodes",
-				"type": "string[]"
-			}
-		],
-		"name": "addIpfsNodes",
-		"outputs": [
-			{
-				"internalType": "string[]",
-				"name": "",
-				"type": "string[]"
-			}
-		],
+		"inputs": [],
+		"name": "resetEthNode",
+		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
-		"constant": false,
-		"inputs": [
-			{
-				"internalType": "string[]",
-				"name": "nodes",
-				"type": "string[]"
-			}
-		],
-		"name": "addSignerNodes",
+		"constant": true,
+		"inputs": [],
+		"name": "getEthNodes",
 		"outputs": [
 			{
-				"internalType": "string[]",
 				"name": "",
 				"type": "string[]"
 			}
 		],
 		"payable": false,
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getIpfsNodes",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -73,8 +75,73 @@
 	},
 	{
 		"constant": false,
+		"inputs": [
+			{
+				"name": "nodes",
+				"type": "string[]"
+			}
+		],
+		"name": "addPublicIpfsNodes",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
 		"inputs": [],
-		"name": "resetEthNode",
+		"name": "resetSignerNode",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "isOwner",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "resetPublicIpfsNode",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "nodes",
+				"type": "string[]"
+			}
+		],
+		"name": "addSignerNodes",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -93,70 +160,6 @@
 		"constant": false,
 		"inputs": [
 			{
-				"internalType": "string[]",
-				"name": "nodes",
-				"type": "string[]"
-			}
-		],
-		"name": "setEthNodes",
-		"outputs": [
-			{
-				"internalType": "string[]",
-				"name": "",
-				"type": "string[]"
-			}
-		],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"internalType": "string[]",
-				"name": "nodes",
-				"type": "string[]"
-			}
-		],
-		"name": "setIpfsNodes",
-		"outputs": [
-			{
-				"internalType": "string[]",
-				"name": "",
-				"type": "string[]"
-			}
-		],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"internalType": "string[]",
-				"name": "nodes",
-				"type": "string[]"
-			}
-		],
-		"name": "setSignerNodes",
-		"outputs": [
-			{
-				"internalType": "string[]",
-				"name": "",
-				"type": "string[]"
-			}
-		],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"internalType": "address",
 				"name": "newOwner",
 				"type": "address"
 			}
@@ -168,97 +171,48 @@
 		"type": "function"
 	},
 	{
+		"constant": true,
+		"inputs": [],
+		"name": "getSignerNodes",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "nodes",
+				"type": "string[]"
+			}
+		],
+		"name": "addIpfsNodes",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"anonymous": false,
 		"inputs": [
 			{
 				"indexed": true,
-				"internalType": "address",
 				"name": "previousOwner",
 				"type": "address"
 			},
 			{
 				"indexed": true,
-				"internalType": "address",
 				"name": "newOwner",
 				"type": "address"
 			}
 		],
 		"name": "OwnershipTransferred",
 		"type": "event"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "getEthNodes",
-		"outputs": [
-			{
-				"internalType": "string[]",
-				"name": "",
-				"type": "string[]"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "getIpfsNodes",
-		"outputs": [
-			{
-				"internalType": "string[]",
-				"name": "",
-				"type": "string[]"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "getSignerNodes",
-		"outputs": [
-			{
-				"internalType": "string[]",
-				"name": "",
-				"type": "string[]"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "isOwner",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "owner",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
 	}
 ]

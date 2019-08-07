@@ -34,6 +34,13 @@ func BootstrapRmAll() ([]string, error) {
 	return resp, err
 }
 
+// ID get self node info
+func ID() (*shell.IDOutput, error) {
+	sh := shell.NewShell("localhost:5001")
+	resp, err := sh.ID()
+	return resp, err
+}
+
 // PinAdd ...
 func PinAdd(hash string) error {
 	sh := shell.NewShell("localhost:5001")

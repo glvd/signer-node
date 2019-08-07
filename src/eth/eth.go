@@ -42,8 +42,11 @@ func NewEth() Ether {
 }
 
 func (e eth) Init() {
-	fmt.Println("path", e.binPath)
-	general.RunCMD(e.binPath, "--datadir", e.nodePath, "init", e.genesisPath)
+	if general.FileExists(e.nodePath + "/geth/nodekey") {
+		fmt.Println("ETH Chain Data Already Inited")
+	} else {
+		general.RunCMD(e.binPath, "--datadir", e.nodePath, "init", e.genesisPath)
+	}
 }
 
 func (e eth) Start() {

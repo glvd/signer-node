@@ -28,7 +28,7 @@ var (
 )
 
 // AccelerateNodeABI is the input ABI used to generate the binding from.
-const AccelerateNodeABI = "[{\"constant\":false,\"inputs\":[{\"internalType\":\"string[]\",\"name\":\"nodes\",\"type\":\"string[]\"}],\"name\":\"addEthNodes\",\"outputs\":[{\"internalType\":\"string[]\",\"name\":\"\",\"type\":\"string[]\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"string[]\",\"name\":\"nodes\",\"type\":\"string[]\"}],\"name\":\"addIpfsNodes\",\"outputs\":[{\"internalType\":\"string[]\",\"name\":\"\",\"type\":\"string[]\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"string[]\",\"name\":\"nodes\",\"type\":\"string[]\"}],\"name\":\"addSignerNodes\",\"outputs\":[{\"internalType\":\"string[]\",\"name\":\"\",\"type\":\"string[]\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"resetEthNode\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"resetIpfsNode\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"string[]\",\"name\":\"nodes\",\"type\":\"string[]\"}],\"name\":\"setEthNodes\",\"outputs\":[{\"internalType\":\"string[]\",\"name\":\"\",\"type\":\"string[]\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"string[]\",\"name\":\"nodes\",\"type\":\"string[]\"}],\"name\":\"setIpfsNodes\",\"outputs\":[{\"internalType\":\"string[]\",\"name\":\"\",\"type\":\"string[]\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"string[]\",\"name\":\"nodes\",\"type\":\"string[]\"}],\"name\":\"setSignerNodes\",\"outputs\":[{\"internalType\":\"string[]\",\"name\":\"\",\"type\":\"string[]\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"constant\":true,\"inputs\":[],\"name\":\"getEthNodes\",\"outputs\":[{\"internalType\":\"string[]\",\"name\":\"\",\"type\":\"string[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getIpfsNodes\",\"outputs\":[{\"internalType\":\"string[]\",\"name\":\"\",\"type\":\"string[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getSignerNodes\",\"outputs\":[{\"internalType\":\"string[]\",\"name\":\"\",\"type\":\"string[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"isOwner\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}]"
+const AccelerateNodeABI = "[{\"constant\":true,\"inputs\":[],\"name\":\"getPublicIpfsNodes\",\"outputs\":[{\"name\":\"\",\"type\":\"string[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"nodes\",\"type\":\"string[]\"}],\"name\":\"addEthNodes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"resetEthNode\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getEthNodes\",\"outputs\":[{\"name\":\"\",\"type\":\"string[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getIpfsNodes\",\"outputs\":[{\"name\":\"\",\"type\":\"string[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"nodes\",\"type\":\"string[]\"}],\"name\":\"addPublicIpfsNodes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"resetSignerNode\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"isOwner\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"resetPublicIpfsNode\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"nodes\",\"type\":\"string[]\"}],\"name\":\"addSignerNodes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"resetIpfsNode\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getSignerNodes\",\"outputs\":[{\"name\":\"\",\"type\":\"string[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"nodes\",\"type\":\"string[]\"}],\"name\":\"addIpfsNodes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"}]"
 
 // AccelerateNode is an auto generated Go binding around an Ethereum contract.
 type AccelerateNode struct {
@@ -224,6 +224,32 @@ func (_AccelerateNode *AccelerateNodeCallerSession) GetIpfsNodes() ([]string, er
 	return _AccelerateNode.Contract.GetIpfsNodes(&_AccelerateNode.CallOpts)
 }
 
+// GetPublicIpfsNodes is a free data retrieval call binding the contract method 0x2a303e65.
+//
+// Solidity: function getPublicIpfsNodes() constant returns(string[])
+func (_AccelerateNode *AccelerateNodeCaller) GetPublicIpfsNodes(opts *bind.CallOpts) ([]string, error) {
+	var (
+		ret0 = new([]string)
+	)
+	out := ret0
+	err := _AccelerateNode.contract.Call(opts, out, "getPublicIpfsNodes")
+	return *ret0, err
+}
+
+// GetPublicIpfsNodes is a free data retrieval call binding the contract method 0x2a303e65.
+//
+// Solidity: function getPublicIpfsNodes() constant returns(string[])
+func (_AccelerateNode *AccelerateNodeSession) GetPublicIpfsNodes() ([]string, error) {
+	return _AccelerateNode.Contract.GetPublicIpfsNodes(&_AccelerateNode.CallOpts)
+}
+
+// GetPublicIpfsNodes is a free data retrieval call binding the contract method 0x2a303e65.
+//
+// Solidity: function getPublicIpfsNodes() constant returns(string[])
+func (_AccelerateNode *AccelerateNodeCallerSession) GetPublicIpfsNodes() ([]string, error) {
+	return _AccelerateNode.Contract.GetPublicIpfsNodes(&_AccelerateNode.CallOpts)
+}
+
 // GetSignerNodes is a free data retrieval call binding the contract method 0xf468f76f.
 //
 // Solidity: function getSignerNodes() constant returns(string[])
@@ -304,63 +330,84 @@ func (_AccelerateNode *AccelerateNodeCallerSession) Owner() (common.Address, err
 
 // AddEthNodes is a paid mutator transaction binding the contract method 0x2d436cec.
 //
-// Solidity: function addEthNodes(string[] nodes) returns(string[])
+// Solidity: function addEthNodes(string[] nodes) returns()
 func (_AccelerateNode *AccelerateNodeTransactor) AddEthNodes(opts *bind.TransactOpts, nodes []string) (*types.Transaction, error) {
 	return _AccelerateNode.contract.Transact(opts, "addEthNodes", nodes)
 }
 
 // AddEthNodes is a paid mutator transaction binding the contract method 0x2d436cec.
 //
-// Solidity: function addEthNodes(string[] nodes) returns(string[])
+// Solidity: function addEthNodes(string[] nodes) returns()
 func (_AccelerateNode *AccelerateNodeSession) AddEthNodes(nodes []string) (*types.Transaction, error) {
 	return _AccelerateNode.Contract.AddEthNodes(&_AccelerateNode.TransactOpts, nodes)
 }
 
 // AddEthNodes is a paid mutator transaction binding the contract method 0x2d436cec.
 //
-// Solidity: function addEthNodes(string[] nodes) returns(string[])
+// Solidity: function addEthNodes(string[] nodes) returns()
 func (_AccelerateNode *AccelerateNodeTransactorSession) AddEthNodes(nodes []string) (*types.Transaction, error) {
 	return _AccelerateNode.Contract.AddEthNodes(&_AccelerateNode.TransactOpts, nodes)
 }
 
 // AddIpfsNodes is a paid mutator transaction binding the contract method 0xfea8d842.
 //
-// Solidity: function addIpfsNodes(string[] nodes) returns(string[])
+// Solidity: function addIpfsNodes(string[] nodes) returns()
 func (_AccelerateNode *AccelerateNodeTransactor) AddIpfsNodes(opts *bind.TransactOpts, nodes []string) (*types.Transaction, error) {
 	return _AccelerateNode.contract.Transact(opts, "addIpfsNodes", nodes)
 }
 
 // AddIpfsNodes is a paid mutator transaction binding the contract method 0xfea8d842.
 //
-// Solidity: function addIpfsNodes(string[] nodes) returns(string[])
+// Solidity: function addIpfsNodes(string[] nodes) returns()
 func (_AccelerateNode *AccelerateNodeSession) AddIpfsNodes(nodes []string) (*types.Transaction, error) {
 	return _AccelerateNode.Contract.AddIpfsNodes(&_AccelerateNode.TransactOpts, nodes)
 }
 
 // AddIpfsNodes is a paid mutator transaction binding the contract method 0xfea8d842.
 //
-// Solidity: function addIpfsNodes(string[] nodes) returns(string[])
+// Solidity: function addIpfsNodes(string[] nodes) returns()
 func (_AccelerateNode *AccelerateNodeTransactorSession) AddIpfsNodes(nodes []string) (*types.Transaction, error) {
 	return _AccelerateNode.Contract.AddIpfsNodes(&_AccelerateNode.TransactOpts, nodes)
 }
 
+// AddPublicIpfsNodes is a paid mutator transaction binding the contract method 0x786c666e.
+//
+// Solidity: function addPublicIpfsNodes(string[] nodes) returns()
+func (_AccelerateNode *AccelerateNodeTransactor) AddPublicIpfsNodes(opts *bind.TransactOpts, nodes []string) (*types.Transaction, error) {
+	return _AccelerateNode.contract.Transact(opts, "addPublicIpfsNodes", nodes)
+}
+
+// AddPublicIpfsNodes is a paid mutator transaction binding the contract method 0x786c666e.
+//
+// Solidity: function addPublicIpfsNodes(string[] nodes) returns()
+func (_AccelerateNode *AccelerateNodeSession) AddPublicIpfsNodes(nodes []string) (*types.Transaction, error) {
+	return _AccelerateNode.Contract.AddPublicIpfsNodes(&_AccelerateNode.TransactOpts, nodes)
+}
+
+// AddPublicIpfsNodes is a paid mutator transaction binding the contract method 0x786c666e.
+//
+// Solidity: function addPublicIpfsNodes(string[] nodes) returns()
+func (_AccelerateNode *AccelerateNodeTransactorSession) AddPublicIpfsNodes(nodes []string) (*types.Transaction, error) {
+	return _AccelerateNode.Contract.AddPublicIpfsNodes(&_AccelerateNode.TransactOpts, nodes)
+}
+
 // AddSignerNodes is a paid mutator transaction binding the contract method 0xc8af5a47.
 //
-// Solidity: function addSignerNodes(string[] nodes) returns(string[])
+// Solidity: function addSignerNodes(string[] nodes) returns()
 func (_AccelerateNode *AccelerateNodeTransactor) AddSignerNodes(opts *bind.TransactOpts, nodes []string) (*types.Transaction, error) {
 	return _AccelerateNode.contract.Transact(opts, "addSignerNodes", nodes)
 }
 
 // AddSignerNodes is a paid mutator transaction binding the contract method 0xc8af5a47.
 //
-// Solidity: function addSignerNodes(string[] nodes) returns(string[])
+// Solidity: function addSignerNodes(string[] nodes) returns()
 func (_AccelerateNode *AccelerateNodeSession) AddSignerNodes(nodes []string) (*types.Transaction, error) {
 	return _AccelerateNode.Contract.AddSignerNodes(&_AccelerateNode.TransactOpts, nodes)
 }
 
 // AddSignerNodes is a paid mutator transaction binding the contract method 0xc8af5a47.
 //
-// Solidity: function addSignerNodes(string[] nodes) returns(string[])
+// Solidity: function addSignerNodes(string[] nodes) returns()
 func (_AccelerateNode *AccelerateNodeTransactorSession) AddSignerNodes(nodes []string) (*types.Transaction, error) {
 	return _AccelerateNode.Contract.AddSignerNodes(&_AccelerateNode.TransactOpts, nodes)
 }
@@ -428,67 +475,46 @@ func (_AccelerateNode *AccelerateNodeTransactorSession) ResetIpfsNode() (*types.
 	return _AccelerateNode.Contract.ResetIpfsNode(&_AccelerateNode.TransactOpts)
 }
 
-// SetEthNodes is a paid mutator transaction binding the contract method 0xb342ef07.
+// ResetPublicIpfsNode is a paid mutator transaction binding the contract method 0x9d738796.
 //
-// Solidity: function setEthNodes(string[] nodes) returns(string[])
-func (_AccelerateNode *AccelerateNodeTransactor) SetEthNodes(opts *bind.TransactOpts, nodes []string) (*types.Transaction, error) {
-	return _AccelerateNode.contract.Transact(opts, "setEthNodes", nodes)
+// Solidity: function resetPublicIpfsNode() returns()
+func (_AccelerateNode *AccelerateNodeTransactor) ResetPublicIpfsNode(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _AccelerateNode.contract.Transact(opts, "resetPublicIpfsNode")
 }
 
-// SetEthNodes is a paid mutator transaction binding the contract method 0xb342ef07.
+// ResetPublicIpfsNode is a paid mutator transaction binding the contract method 0x9d738796.
 //
-// Solidity: function setEthNodes(string[] nodes) returns(string[])
-func (_AccelerateNode *AccelerateNodeSession) SetEthNodes(nodes []string) (*types.Transaction, error) {
-	return _AccelerateNode.Contract.SetEthNodes(&_AccelerateNode.TransactOpts, nodes)
+// Solidity: function resetPublicIpfsNode() returns()
+func (_AccelerateNode *AccelerateNodeSession) ResetPublicIpfsNode() (*types.Transaction, error) {
+	return _AccelerateNode.Contract.ResetPublicIpfsNode(&_AccelerateNode.TransactOpts)
 }
 
-// SetEthNodes is a paid mutator transaction binding the contract method 0xb342ef07.
+// ResetPublicIpfsNode is a paid mutator transaction binding the contract method 0x9d738796.
 //
-// Solidity: function setEthNodes(string[] nodes) returns(string[])
-func (_AccelerateNode *AccelerateNodeTransactorSession) SetEthNodes(nodes []string) (*types.Transaction, error) {
-	return _AccelerateNode.Contract.SetEthNodes(&_AccelerateNode.TransactOpts, nodes)
+// Solidity: function resetPublicIpfsNode() returns()
+func (_AccelerateNode *AccelerateNodeTransactorSession) ResetPublicIpfsNode() (*types.Transaction, error) {
+	return _AccelerateNode.Contract.ResetPublicIpfsNode(&_AccelerateNode.TransactOpts)
 }
 
-// SetIpfsNodes is a paid mutator transaction binding the contract method 0x7db12d3c.
+// ResetSignerNode is a paid mutator transaction binding the contract method 0x85351535.
 //
-// Solidity: function setIpfsNodes(string[] nodes) returns(string[])
-func (_AccelerateNode *AccelerateNodeTransactor) SetIpfsNodes(opts *bind.TransactOpts, nodes []string) (*types.Transaction, error) {
-	return _AccelerateNode.contract.Transact(opts, "setIpfsNodes", nodes)
+// Solidity: function resetSignerNode() returns()
+func (_AccelerateNode *AccelerateNodeTransactor) ResetSignerNode(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _AccelerateNode.contract.Transact(opts, "resetSignerNode")
 }
 
-// SetIpfsNodes is a paid mutator transaction binding the contract method 0x7db12d3c.
+// ResetSignerNode is a paid mutator transaction binding the contract method 0x85351535.
 //
-// Solidity: function setIpfsNodes(string[] nodes) returns(string[])
-func (_AccelerateNode *AccelerateNodeSession) SetIpfsNodes(nodes []string) (*types.Transaction, error) {
-	return _AccelerateNode.Contract.SetIpfsNodes(&_AccelerateNode.TransactOpts, nodes)
+// Solidity: function resetSignerNode() returns()
+func (_AccelerateNode *AccelerateNodeSession) ResetSignerNode() (*types.Transaction, error) {
+	return _AccelerateNode.Contract.ResetSignerNode(&_AccelerateNode.TransactOpts)
 }
 
-// SetIpfsNodes is a paid mutator transaction binding the contract method 0x7db12d3c.
+// ResetSignerNode is a paid mutator transaction binding the contract method 0x85351535.
 //
-// Solidity: function setIpfsNodes(string[] nodes) returns(string[])
-func (_AccelerateNode *AccelerateNodeTransactorSession) SetIpfsNodes(nodes []string) (*types.Transaction, error) {
-	return _AccelerateNode.Contract.SetIpfsNodes(&_AccelerateNode.TransactOpts, nodes)
-}
-
-// SetSignerNodes is a paid mutator transaction binding the contract method 0x5af568c7.
-//
-// Solidity: function setSignerNodes(string[] nodes) returns(string[])
-func (_AccelerateNode *AccelerateNodeTransactor) SetSignerNodes(opts *bind.TransactOpts, nodes []string) (*types.Transaction, error) {
-	return _AccelerateNode.contract.Transact(opts, "setSignerNodes", nodes)
-}
-
-// SetSignerNodes is a paid mutator transaction binding the contract method 0x5af568c7.
-//
-// Solidity: function setSignerNodes(string[] nodes) returns(string[])
-func (_AccelerateNode *AccelerateNodeSession) SetSignerNodes(nodes []string) (*types.Transaction, error) {
-	return _AccelerateNode.Contract.SetSignerNodes(&_AccelerateNode.TransactOpts, nodes)
-}
-
-// SetSignerNodes is a paid mutator transaction binding the contract method 0x5af568c7.
-//
-// Solidity: function setSignerNodes(string[] nodes) returns(string[])
-func (_AccelerateNode *AccelerateNodeTransactorSession) SetSignerNodes(nodes []string) (*types.Transaction, error) {
-	return _AccelerateNode.Contract.SetSignerNodes(&_AccelerateNode.TransactOpts, nodes)
+// Solidity: function resetSignerNode() returns()
+func (_AccelerateNode *AccelerateNodeTransactorSession) ResetSignerNode() (*types.Transaction, error) {
+	return _AccelerateNode.Contract.ResetSignerNode(&_AccelerateNode.TransactOpts)
 }
 
 // TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
