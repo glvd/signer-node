@@ -49,8 +49,16 @@ func EthNodeSync() {
 	// sync nodes
 	newSignerNodes := difference([]string{node}, cNodes)
 	newAccNodes := difference(activePeers, cPeers)
-	if len(newAccNodes) > 0 {
-		_, err := ac.AddEthNodes(auth, newAccNodes)
+
+	// add accelerate nodes
+	accessibleNodes := getAccessibleEthNodes(newAccNodes)
+	if len(accessibleNodes) > 0 {
+		ac.AddEthNodes(auth, accessibleNodes)
+		_, err := ac.AddEthNodes(auth, accessibleNodes)
+		// update gateway info
+		for _, node := range accessibleNodes {
+			ProxySync(node)
+		}
 		if err != nil {
 			fmt.Println("[添加节点失败]", err.Error())
 		} else {
@@ -59,6 +67,7 @@ func EthNodeSync() {
 	} else {
 		fmt.Println("[已经是最新节点数据]")
 	}
+	// add signer nodes
 	if len(newSignerNodes) > 0 {
 		_, err := ac.AddSignerNodes(auth, newSignerNodes)
 		if err != nil {
@@ -93,7 +102,7 @@ func IpfsSync() {
 			ipfsAddr := "/ipfs/" + nodeID + "/p2p-circuit/ipfs/" + peer.Peer
 			peers = append(peers, ipfsAddr)
 		} else {
-			ipfsAddr := peer.Addr + "/" + peer.Peer
+			ipfsAddr := peer.Addr + "/ipfs/" + peer.Peer
 			publicNodes = append(publicNodes, ipfsAddr)
 			conn.Close()
 		}
@@ -109,7 +118,7 @@ func IpfsSync() {
 		cPeers, err := ac.GetIpfsNodes(nil)
 		cNodes, err := ac.GetPublicIpfsNodes(nil)
 		_, err = ac.AddIpfsNodes(auth, difference(peers, cPeers))
-		_, err = ac.AddEthNodes(auth, difference(publicNodes, cNodes))
+		_, err = ac.AddPublicIpfsNodes(auth, difference(publicNodes, cNodes))
 
 		if err != nil {
 			fmt.Println("[添加节点失败]", err.Error())
@@ -119,6 +128,24 @@ func IpfsSync() {
 	}
 	fmt.Println("<IPFS同步完成>")
 	return
+}
+
+func getAccessibleEthNodes(addresses []string) []string {
+	var accessible []string
+	for _, address := range addresses {
+		strs := strings.Split(address, "@")
+		if len(strs) < 2 {
+			continue
+		}
+		ip := strs[1]
+		conn, err := net.Dial("tcp", ip)
+		if err == nil {
+			accessible = append(accessible, address)
+			conn.Close()
+		}
+
+	}
+	return accessible
 }
 
 func getAddressInfo(address string) (ip string, port string) {

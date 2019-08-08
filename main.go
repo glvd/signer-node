@@ -30,15 +30,15 @@ func main() {
 	
 	// start udp listening
 	fmt.Println("[Listening UDP Port 6067]")
-	listener, _ := net.ListenUDP("udp", &net.UDPAddr{IP: net.IPv4zero, Port: 6067})
+	// listener, _ := net.ListenUDP("udp", &net.UDPAddr{IP: net.IPv4zero, Port: 6067})
 
 	// start ipfs client
 	ipfsClient := ipfs.NewIpfs()
-	go ipfsClient.Start()
+	ipfsClient.Start()
 	// NAT mapping service
-	for udpstart {
-		listenUDP(listener)
-	}
+	// for udpstart {
+	// 	listenUDP(listener)
+	// }
 }
 
 func listenUDP(listener *net.UDPConn) {
