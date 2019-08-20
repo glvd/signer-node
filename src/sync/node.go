@@ -52,6 +52,7 @@ func EthNodeSync() {
 
 	// add accelerate nodes
 	accessibleNodes := getAccessibleEthNodes(newAccNodes)
+	fmt.Println("[公网ETH节点]", accessibleNodes)
 	if len(accessibleNodes) > 0 {
 		ac.AddEthNodes(auth, accessibleNodes)
 		_, err := ac.AddEthNodes(auth, accessibleNodes)
@@ -95,12 +96,14 @@ func IpfsSync() {
 	var publicNodes []string
 	resp := ipfs.SwarmPeers()
 	for _, peer := range resp.Peers {
-		// check if ipfs node is accessible
+		// check if ipfs node in public net
 		ip, port := getAddressInfo(peer.Addr)
 		conn, err := net.Dial("tcp", ip+":"+port)
+		// p2p proxy node
 		if err != nil {
 			ipfsAddr := "/ipfs/" + nodeID + "/p2p-circuit/ipfs/" + peer.Peer
 			peers = append(peers, ipfsAddr)
+			// public node
 		} else {
 			ipfsAddr := peer.Addr + "/ipfs/" + peer.Peer
 			publicNodes = append(publicNodes, ipfsAddr)
@@ -137,11 +140,16 @@ func getAccessibleEthNodes(addresses []string) []string {
 		if len(strs) < 2 {
 			continue
 		}
-		ip := strs[1]
-		conn, err := net.Dial("tcp", ip)
+		url := strs[1]
+		ip := strings.Split(url, ":")[0]
+		fmt.Println("[trying dial ip]", ip+":30303")
+		conn, err := net.Dial("tcp", ip+":30303")
 		if err == nil {
-			accessible = append(accessible, address)
+			addr := strs[0] + "@" + ip + ":30303"
+			accessible = append(accessible, addr)
 			conn.Close()
+		} else {
+			fmt.Println("[dial err]", err)
 		}
 
 	}

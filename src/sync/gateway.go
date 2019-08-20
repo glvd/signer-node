@@ -2,7 +2,6 @@ package sync
 
 import (
 	"fmt"
-	"net"
 	"net/http"
 	"net/url"
 	"strings"
@@ -15,15 +14,13 @@ func ProxySync(remoteNode string) {
 	fmt.Println("<更新网关数据中...>")
 	// check if remote node is accessible
 	fmt.Println("[远端节点地址]", remoteNode)
-	conn, err := net.Dial("tcp", remoteNode)
-	if err != nil {
-		fmt.Println("[远端节点无响应]", err.Error())
+	if !strings.Contains(remoteNode, "enode") {
 		return
 	}
-	conn.Close()
-
+	uri := strings.Split(remoteNode, "@")[1]
+	ip := strings.Split(uri, ":")[0] + ":" + "8545"
 	// update gateway proxy
-	data := url.Values{"target": {remoteNode}, "weight": {"15"}}
+	data := url.Values{"target": {ip}, "weight": {"15"}}
 	body := strings.NewReader(data.Encode())
 	resp, err := http.Post(gatewayAPI, "application/x-www-form-urlencoded", body)
 	if err != nil {

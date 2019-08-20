@@ -24,7 +24,8 @@ func NewIpfs() Ipfser {
 	if sys == "windows" {
 		bin, err = general.PathParse("/bin/ipfs_win.exe")
 	} else if sys == "linux" {
-		bin, err = "ipfs", nil
+		bin, err = general.PathParse("/bin/ipfs_linux")
+		general.RunCMD("chmod", "777", bin)
 	} else {
 		fmt.Println("os not match")
 	}
@@ -41,15 +42,15 @@ func (i ipfs) Start() {
 	if sys == "windows" {
 		general.RunCMD("set IPFS_PATH=" + dir)
 	} else if sys == "linux" {
-		general.RunCMD("export", "IPFS_PATH="+dir)
+		general.RunCMD("export IPFS_PATH=" + dir)
 	}
 
-	// if general.FileExists(dir + "/config") {
-	// 	fmt.Println("IPFS Node Already Inited")
-	// } else {
-	// 	fmt.Println("Initing IPFS Node")
-	// 	general.RunCMD(i.binPath, "init")
-	// }
+	if general.FileExists(dir + "/config") {
+		fmt.Println("IPFS Node Already Inited")
+	} else {
+		fmt.Println("Initing IPFS Node")
+		general.RunCMD(i.binPath, "init")
+	}
 	general.RunCMD(i.binPath, "init")
 	fmt.Println("Starting IPFS Node")
 	general.RunCMD(i.binPath, "config", "Swarm.EnableAutoNATService", "--bool", "true")
