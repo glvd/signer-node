@@ -45,19 +45,16 @@ func EthNodeSync() {
 	} else {
 		fmt.Println("[合约已有主节点数]", len(cNodes))
 	}
-
+	// get accessible nodes
+	accessibleNodes := getAccessibleEthNodes(activePeers)
 	// sync nodes
 	newSignerNodes := difference([]string{node}, cNodes)
-	newAccNodes := difference(activePeers, cPeers)
+	newAccNodes := difference(accessibleNodes, cPeers)
 
-	// add accelerate nodes
-	accessibleNodes := getAccessibleEthNodes(newAccNodes)
-	fmt.Println("[公网ETH节点]", accessibleNodes)
-	if len(accessibleNodes) > 0 {
-		ac.AddEthNodes(auth, accessibleNodes)
+	if len(newAccNodes) > 0 {
 		_, err := ac.AddEthNodes(auth, accessibleNodes)
 		// update gateway info
-		for _, node := range accessibleNodes {
+		for _, node := range newAccNodes {
 			ProxySync(node)
 		}
 		if err != nil {

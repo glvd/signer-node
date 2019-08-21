@@ -45,12 +45,6 @@ func (i ipfs) Start() {
 		general.RunCMD("export IPFS_PATH=" + dir)
 	}
 
-	if general.FileExists(dir + "/config") {
-		fmt.Println("IPFS Node Already Inited")
-	} else {
-		fmt.Println("Initing IPFS Node")
-		general.RunCMD(i.binPath, "init")
-	}
 	general.RunCMD(i.binPath, "init")
 	fmt.Println("Starting IPFS Node")
 	general.RunCMD(i.binPath, "config", "Swarm.EnableAutoNATService", "--bool", "true")
