@@ -3,6 +3,7 @@ package eth
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"signerNode/src/general"
 
 	"github.com/ethereum/go-ethereum/rpc"
@@ -61,7 +62,7 @@ func AddPeer(urls []string) error {
 	defer cancel()
 	endPoint, _ := general.PathParse("/node/geth.ipc")
 	client, err := rpc.DialIPC(ctx, endPoint)
-
+	defer client.Close()
 	if err != nil {
 		return err
 	}
@@ -78,10 +79,13 @@ func Peers() ([]string, error) {
 	defer cancel()
 	endPoint, _ := general.PathParse("/node/geth.ipc")
 	client, err := rpc.DialIPC(ctx, endPoint)
+	defer client.Close()
 	if err != nil {
 		return result, err
 	}
-	client.Call(peers, "admin_peers")
+	client.Call(&peers, "admin_peers")
+	fmt.Println("[peers result]", peers)
+
 	for _, peer := range peers {
 		v, _ := peer.Protocols.(map[string]interface{})
 		_, ok := v["eth"].(string)
@@ -89,7 +93,6 @@ func Peers() ([]string, error) {
 			result = append(result, peer.Enode)
 		}
 	}
-
 	return result, nil
 }
 
@@ -101,9 +104,10 @@ func NodeInfo() (Node, error) {
 	defer cancel()
 	endPoint, _ := general.PathParse("/node/geth.ipc")
 	client, err := rpc.DialIPC(ctx, endPoint)
+	defer client.Close()
 	if err != nil {
 		return result, err
 	}
-	client.Call(result, "admin_nodeInfo")
+	client.Call(&result, "admin_nodeInfo")
 	return result, nil
 }

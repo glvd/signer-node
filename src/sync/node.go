@@ -51,23 +51,52 @@ func EthNodeSync() {
 	newSignerNodes := difference([]string{node}, cNodes)
 	newAccNodes := difference(accessibleNodes, cPeers)
 
+	// node to be deleted
+	deleteNodes := difference(cPeers, accessibleNodes)
+	var deleteIdx []int
+	for _, dNode := range deleteNodes {
+		for idx, cNode := range cPeers {
+			if cNode == dNode {
+				deleteIdx = append(deleteIdx, idx)
+			}
+		}
+	}
+
+	fmt.Println("[待删除节点]", deleteIdx, deleteNodes)
+
 	if len(newAccNodes) > 0 {
-		_, err := ac.AddEthNodes(auth, accessibleNodes)
-		// update gateway info
-		for _, node := range newAccNodes {
-			ProxySync(node)
+		var err error
+		for _, n := range newAccNodes {
+			_, err = ac.AddEthNodes(auth, []string{n})
 		}
 		if err != nil {
 			fmt.Println("[添加节点失败]", err.Error())
 		} else {
 			fmt.Println("[添加节点成功]")
 		}
+		// update gateway info
+		for _, node := range newAccNodes {
+			ProxySync(node)
+		}
 	} else {
 		fmt.Println("[已经是最新节点数据]")
 	}
+
 	// add signer nodes
 	if len(newSignerNodes) > 0 {
 		_, err := ac.AddSignerNodes(auth, newSignerNodes)
+		if err != nil {
+			fmt.Println("<添加主节点失败>", err.Error())
+		} else {
+			fmt.Println("[添加主节点成功]")
+		}
+	}
+	// delete rest node
+	if len(deleteIdx) > 0 {
+		var err error
+		for _, n := range deleteIdx {
+			_, err = ac.DeleteEthNodes(auth, uint32(n))
+		}
 		if err != nil {
 			fmt.Println("<添加主节点失败>", err.Error())
 		} else {
@@ -109,23 +138,30 @@ func IpfsSync() {
 	}
 	fmt.Println("[当前IPFS总节点数]", len(peers)+len(publicNodes))
 	fmt.Println("[当前IPFS公网节点数]", len(publicNodes))
-	// sync ipfs swarm nodes
-	if len(peers) > 0 {
-		cl := eth.ContractLoader()
-		ac, auth, client := cl.AccelerateNode()
-		defer client.Close()
-
-		cPeers, err := ac.GetIpfsNodes(nil)
-		cNodes, err := ac.GetPublicIpfsNodes(nil)
-		_, err = ac.AddIpfsNodes(auth, difference(peers, cPeers))
-		_, err = ac.AddPublicIpfsNodes(auth, difference(publicNodes, cNodes))
-
-		if err != nil {
-			fmt.Println("[添加节点失败]", err.Error())
-		} else {
-			fmt.Println("[添加节点成功] ")
-		}
+	// get nodes info
+	if len(peers) == 0 {
+		fmt.Println("<IPFS节点状态已是最新>")
+		return
 	}
+	cl := eth.ContractLoader()
+	ac, auth, client := cl.AccelerateNode()
+	defer client.Close()
+
+	cPeers, err := ac.GetIpfsNodes(nil)
+	cNodes, err := ac.GetPublicIpfsNodes(nil)
+	for _, n := range difference(peers, cPeers) {
+		_, err = ac.AddIpfsNodes(auth, []string{n})
+	}
+	for _, n := range difference(publicNodes, cNodes) {
+		_, err = ac.AddPublicIpfsNodes(auth, []string{n})
+	}
+
+	if err != nil {
+		fmt.Println("[添加节点失败]", err.Error())
+	} else {
+		fmt.Println("[添加节点成功] ")
+	}
+
 	fmt.Println("<IPFS同步完成>")
 	return
 }

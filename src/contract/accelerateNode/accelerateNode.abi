@@ -17,6 +17,34 @@
 		"constant": false,
 		"inputs": [
 			{
+				"name": "idx",
+				"type": "uint32"
+			}
+		],
+		"name": "deleteIpfsNodes",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "idx",
+				"type": "uint32"
+			}
+		],
+		"name": "deleteEthNodes",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
 				"name": "nodes",
 				"type": "string[]"
 			}

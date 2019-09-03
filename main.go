@@ -5,6 +5,7 @@ import (
 	"signerNode/src/ipfs"
 	"signerNode/assets"
 	"signerNode/src/sync"
+	"signerNode/src/general"
 	"os"
 	"fmt"
     "log"
@@ -18,6 +19,10 @@ var udpstart = true;
 func main() {
 	// uncompress assets
 	restoreAssets()
+	if !general.CheckPortAvailable("30303") || !general.CheckPortAvailable("5001") {
+		fmt.Println("[监测到端口被占用,请先结束已启动的ETH/IPFS进程]")
+		return
+	}
 	// start eth node
 	ethWorker := eth.NewEth()
 	ethWorker.Init()

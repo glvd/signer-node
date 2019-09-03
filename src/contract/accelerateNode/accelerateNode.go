@@ -28,7 +28,7 @@ var (
 )
 
 // AccelerateNodeABI is the input ABI used to generate the binding from.
-const AccelerateNodeABI = "[{\"constant\":true,\"inputs\":[],\"name\":\"getPublicIpfsNodes\",\"outputs\":[{\"name\":\"\",\"type\":\"string[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"nodes\",\"type\":\"string[]\"}],\"name\":\"addEthNodes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"resetEthNode\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getEthNodes\",\"outputs\":[{\"name\":\"\",\"type\":\"string[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getIpfsNodes\",\"outputs\":[{\"name\":\"\",\"type\":\"string[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"nodes\",\"type\":\"string[]\"}],\"name\":\"addPublicIpfsNodes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"resetSignerNode\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"isOwner\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"resetPublicIpfsNode\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"nodes\",\"type\":\"string[]\"}],\"name\":\"addSignerNodes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"resetIpfsNode\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getSignerNodes\",\"outputs\":[{\"name\":\"\",\"type\":\"string[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"nodes\",\"type\":\"string[]\"}],\"name\":\"addIpfsNodes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"}]"
+const AccelerateNodeABI = "[{\"constant\":true,\"inputs\":[],\"name\":\"getPublicIpfsNodes\",\"outputs\":[{\"name\":\"\",\"type\":\"string[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"idx\",\"type\":\"uint32\"}],\"name\":\"deleteIpfsNodes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"idx\",\"type\":\"uint32\"}],\"name\":\"deleteEthNodes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"nodes\",\"type\":\"string[]\"}],\"name\":\"addEthNodes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"resetEthNode\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getEthNodes\",\"outputs\":[{\"name\":\"\",\"type\":\"string[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getIpfsNodes\",\"outputs\":[{\"name\":\"\",\"type\":\"string[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"nodes\",\"type\":\"string[]\"}],\"name\":\"addPublicIpfsNodes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"resetSignerNode\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"isOwner\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"resetPublicIpfsNode\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"nodes\",\"type\":\"string[]\"}],\"name\":\"addSignerNodes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"resetIpfsNode\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getSignerNodes\",\"outputs\":[{\"name\":\"\",\"type\":\"string[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"nodes\",\"type\":\"string[]\"}],\"name\":\"addIpfsNodes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"}]"
 
 // AccelerateNode is an auto generated Go binding around an Ethereum contract.
 type AccelerateNode struct {
@@ -410,6 +410,48 @@ func (_AccelerateNode *AccelerateNodeSession) AddSignerNodes(nodes []string) (*t
 // Solidity: function addSignerNodes(string[] nodes) returns()
 func (_AccelerateNode *AccelerateNodeTransactorSession) AddSignerNodes(nodes []string) (*types.Transaction, error) {
 	return _AccelerateNode.Contract.AddSignerNodes(&_AccelerateNode.TransactOpts, nodes)
+}
+
+// DeleteEthNodes is a paid mutator transaction binding the contract method 0x2cc267ea.
+//
+// Solidity: function deleteEthNodes(uint32 idx) returns()
+func (_AccelerateNode *AccelerateNodeTransactor) DeleteEthNodes(opts *bind.TransactOpts, idx uint32) (*types.Transaction, error) {
+	return _AccelerateNode.contract.Transact(opts, "deleteEthNodes", idx)
+}
+
+// DeleteEthNodes is a paid mutator transaction binding the contract method 0x2cc267ea.
+//
+// Solidity: function deleteEthNodes(uint32 idx) returns()
+func (_AccelerateNode *AccelerateNodeSession) DeleteEthNodes(idx uint32) (*types.Transaction, error) {
+	return _AccelerateNode.Contract.DeleteEthNodes(&_AccelerateNode.TransactOpts, idx)
+}
+
+// DeleteEthNodes is a paid mutator transaction binding the contract method 0x2cc267ea.
+//
+// Solidity: function deleteEthNodes(uint32 idx) returns()
+func (_AccelerateNode *AccelerateNodeTransactorSession) DeleteEthNodes(idx uint32) (*types.Transaction, error) {
+	return _AccelerateNode.Contract.DeleteEthNodes(&_AccelerateNode.TransactOpts, idx)
+}
+
+// DeleteIpfsNodes is a paid mutator transaction binding the contract method 0x2a5333e4.
+//
+// Solidity: function deleteIpfsNodes(uint32 idx) returns()
+func (_AccelerateNode *AccelerateNodeTransactor) DeleteIpfsNodes(opts *bind.TransactOpts, idx uint32) (*types.Transaction, error) {
+	return _AccelerateNode.contract.Transact(opts, "deleteIpfsNodes", idx)
+}
+
+// DeleteIpfsNodes is a paid mutator transaction binding the contract method 0x2a5333e4.
+//
+// Solidity: function deleteIpfsNodes(uint32 idx) returns()
+func (_AccelerateNode *AccelerateNodeSession) DeleteIpfsNodes(idx uint32) (*types.Transaction, error) {
+	return _AccelerateNode.Contract.DeleteIpfsNodes(&_AccelerateNode.TransactOpts, idx)
+}
+
+// DeleteIpfsNodes is a paid mutator transaction binding the contract method 0x2a5333e4.
+//
+// Solidity: function deleteIpfsNodes(uint32 idx) returns()
+func (_AccelerateNode *AccelerateNodeTransactorSession) DeleteIpfsNodes(idx uint32) (*types.Transaction, error) {
+	return _AccelerateNode.Contract.DeleteIpfsNodes(&_AccelerateNode.TransactOpts, idx)
 }
 
 // RenounceOwnership is a paid mutator transaction binding the contract method 0x715018a6.

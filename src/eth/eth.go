@@ -44,7 +44,7 @@ func NewEth() Ether {
 }
 
 func (e eth) Init() {
-	 fmt.Println("bin path", e.binPath)
+	fmt.Println("bin path", e.binPath)
 	if general.FileExists(e.nodePath + "/geth/nodekey") {
 		fmt.Println("ETH Chain Data Already Inited")
 	} else {
@@ -57,6 +57,6 @@ func (e eth) Start() {
 	if sys == "windows" {
 		general.RunCMD(e.binPath, "--datadir", e.nodePath, "--networkid", "20190723", "--rpc", "--rpcaddr", "0.0.0.0", "--rpccorsdomain", "*", "--rpcapi", "eth,web3,admin,net", "--unlock", "54C0fa4a3d982656c51fe7dFBdCc21923a7678cB", "--password", e.nodePath+"/password", "--mine")
 	} else {
-		general.RunCMD(e.binPath, "--allow-insecure-unlock",  "--datadir", e.nodePath, "--networkid", "20190723", "--rpc", "--rpcaddr", "0.0.0.0", "--rpccorsdomain", "*", "--rpcapi", "eth,web3,admin,net", "--unlock", "54C0fa4a3d982656c51fe7dFBdCc21923a7678cB", "--password", e.nodePath+"/password", "--mine")
+		general.RunCMD(e.binPath, "--allow-insecure-unlock", "--datadir", e.nodePath, "--networkid", "20190723", "--rpc", "--rpcaddr", "0.0.0.0", "--rpccorsdomain", "*", "--rpcapi", "eth,web3,admin,net", "--unlock", "54C0fa4a3d982656c51fe7dFBdCc21923a7678cB", "--password", e.nodePath+"/password", "--mine")
 	}
 }

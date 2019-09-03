@@ -5,6 +5,7 @@ import (
 	"os/exec"
 )
 
+// RunCMD ...
 func RunCMD(name string, args ...string) *exec.Cmd {
 	var err error
 

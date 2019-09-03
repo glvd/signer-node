@@ -2,6 +2,7 @@ package ipfs
 
 import (
 	"fmt"
+	"os"
 	"runtime"
 	"signerNode/src/general"
 )
@@ -37,13 +38,9 @@ func NewIpfs() Ipfser {
 }
 
 func (i ipfs) Start() {
-	var sys = runtime.GOOS
 	dir, _ := general.PathParse("/ipfs_repo")
-	if sys == "windows" {
-		general.RunCMD("set IPFS_PATH=" + dir)
-	} else if sys == "linux" {
-		general.RunCMD("export IPFS_PATH=" + dir)
-	}
+	// set ipfs path
+	os.Setenv("IPFS_PATH", dir)
 
 	general.RunCMD(i.binPath, "init")
 	fmt.Println("Starting IPFS Node")
