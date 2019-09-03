@@ -1,11 +1,11 @@
 package eth
 
 import (
-	"bytes"
+	"context"
 	"encoding/json"
-	"io/ioutil"
-	"log"
-	"net/http"
+	"signerNode/src/general"
+
+	"github.com/ethereum/go-ethereum/rpc"
 )
 
 // Network ...
@@ -53,90 +53,57 @@ type NodeResult struct {
 }
 
 // AddPeer ...
-func AddPeer(urls []string) (interface{}, error) {
-	var result interface{}
+func AddPeer(urls []string) error {
 	reqBody, err := json.Marshal(map[string]interface{}{
-		"method": "admin_addPeer",
 		"params": urls,
-		"id":     "74",
 	})
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	endPoint, _ := general.PathParse("/node/geth.ipc")
+	client, err := rpc.DialIPC(ctx, endPoint)
 
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	resp, err := http.Post("http://localhost:8545", "application/json", bytes.NewBuffer(reqBody))
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Print("request error is", err)
-	}
-	json.Unmarshal(body, &result)
-	return result, nil
+	client.Call(nil, "admin_addPeer", reqBody)
+	return nil
 }
 
 // Peers ...
 func Peers() ([]string, error) {
-	var result Result
-	var peers []string
-
-	// parse json
-	reqBody, err := json.Marshal(map[string]string{
-		"method": "admin_peers",
-		"id":     "74",
-	})
-
+	var peers []Peer
+	var result []string
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	endPoint, _ := general.PathParse("/node/geth.ipc")
+	client, err := rpc.DialIPC(ctx, endPoint)
 	if err != nil {
-		return peers, err
+		return result, err
 	}
-	// send request
-	resp, err := http.Post("http://localhost:8545", "application/json", bytes.NewBuffer(reqBody))
-	if err != nil {
-		return peers, err
-	}
-	defer resp.Body.Close()
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Print("request error is", err)
-	}
-
-	json.Unmarshal(body, &result)
-
-	for _, peer := range result.Result {
+	client.Call(peers, "admin_peers")
+	for _, peer := range peers {
 		v, _ := peer.Protocols.(map[string]interface{})
 		_, ok := v["eth"].(string)
 		if ok == false {
-			peers = append(peers, peer.Enode)
+			result = append(result, peer.Enode)
 		}
 	}
 
-	return peers, nil
+	return result, nil
 }
 
 // NodeInfo ...
-func NodeInfo() (NodeResult, error) {
-	var result NodeResult
-	reqBody, err := json.Marshal(map[string]string{
-		"method": "admin_nodeInfo",
-		"id":     "74",
-	})
+func NodeInfo() (Node, error) {
+	var result Node
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	endPoint, _ := general.PathParse("/node/geth.ipc")
+	client, err := rpc.DialIPC(ctx, endPoint)
 	if err != nil {
 		return result, err
 	}
-	resp, err := http.Post("http://localhost:8545", "application/json", bytes.NewBuffer(reqBody))
-	if err != nil {
-		return result, err
-	}
-	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return result, err
-	}
-	json.Unmarshal(body, &result)
+	client.Call(result, "admin_nodeInfo")
 	return result, nil
 }

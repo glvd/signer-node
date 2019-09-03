@@ -23,7 +23,7 @@ func EthNodeSync() {
 	if err != nil {
 		fmt.Println("[获取本节点信息失败] ", err.Error())
 	}
-	node := nodeInfo.Result.Enode
+	node := nodeInfo.Enode
 
 	// init contract
 	cl := eth.ContractLoader()
