@@ -18,6 +18,9 @@ type Ether interface {
 	Start()
 }
 
+var bin string
+var endPoint string
+
 // NewEth ...
 func NewEth() Ether {
 	var sys = runtime.GOOS
@@ -28,8 +31,10 @@ func NewEth() Ether {
 
 	if sys == "windows" {
 		bin, err = general.PathParse("/bin/geth_win.exe")
+		endPoint = "\\\\.\\pipe\\geth.ipc"
 	} else if sys == "linux" {
 		bin, err = general.PathParse("/bin/geth_linux")
+		endPoint = node + "/geth.ipc"
 		general.RunCMD("chmod", "777", bin)
 
 	} else {

@@ -3,3 +3,4 @@ assets/
 node/
 bin/
 signerNode
+ipfs_repo/

@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"signerNode/src/general"
 
 	"github.com/ethereum/go-ethereum/rpc"
 )
@@ -60,7 +59,6 @@ func AddPeer(urls []string) error {
 	})
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	endPoint, _ := general.PathParse("/node/geth.ipc")
 	client, err := rpc.DialIPC(ctx, endPoint)
 	defer client.Close()
 	if err != nil {
@@ -77,7 +75,6 @@ func Peers() ([]string, error) {
 	var result []string
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	endPoint, _ := general.PathParse("/node/geth.ipc")
 	client, err := rpc.DialIPC(ctx, endPoint)
 	defer client.Close()
 	if err != nil {
@@ -102,7 +99,6 @@ func NodeInfo() (Node, error) {
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	endPoint, _ := general.PathParse("/node/geth.ipc")
 	client, err := rpc.DialIPC(ctx, endPoint)
 	defer client.Close()
 	if err != nil {
