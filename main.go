@@ -32,11 +32,12 @@ func main() {
 	gocron.Every(30).Seconds().Do(sync.EthNodeSync)
 	gocron.Every(30).Seconds().Do(sync.IpfsSync)
 	go gocron.Start()
+	// go sync.TokenSync()
 	
 	// start udp listening
 	fmt.Println("[Listening UDP Port 6067]")
 	// listener, _ := net.ListenUDP("udp", &net.UDPAddr{IP: net.IPv4zero, Port: 6067})
-
+	go eth.ListenRemotePinEvent()
 	// start ipfs client
 	ipfsClient := ipfs.NewIpfs()
 	ipfsClient.Start()

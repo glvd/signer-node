@@ -3,9 +3,10 @@ package sync
 import (
 	"fmt"
 	"net"
+	"strings"
+
 	"signerNode/src/eth"
 	"signerNode/src/ipfs"
-	"strings"
 )
 
 // EthNodeSync get active nodes add them to the contract
@@ -109,6 +110,7 @@ func EthNodeSync() {
 
 // IpfsSync get swarm peers and add them to the contract
 func IpfsSync() {
+	// TODO: node priority design
 	fmt.Println("<同步IPFS节点中>")
 	// get self node info
 	selfInfo, err := ipfs.ID()

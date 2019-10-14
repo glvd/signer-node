@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"signerNode/src/contract/accelerateNode"
+	"signerNode/src/contract/token"
 	"signerNode/src/general"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -12,8 +13,9 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 
-const keyStore = `{"address":"54c0fa4a3d982656c51fe7dfbdcc21923a7678cb","crypto":{"cipher":"aes-128-ctr","ciphertext":"a8552eef06ae970cd45d27350d6fa910bc9e492d95d41eab980cd8d849cada3b","cipherparams":{"iv":"6e189a9b631710587b704dd62e1fa8c4"},"kdf":"scrypt","kdfparams":{"dklen":32,"n":262144,"p":1,"r":8,"salt":"c57af43e0822709eb04a0d13ce63ca71f147ec40c6ed7a225042a705aa37b16f"},"mac":"b4308156d0b54096d21f51ad831eb18ff9a067e866da9c63685f9ef8ac2483e2"},"id":"fbec8deb-015e-4db2-8a89-43e784618cf4","version":3}`
-const nodeAddr = "0xc2453b123aef2de3ad7505fabefb7146467003a7"
+const keyStore = `{"address":"945d35cd4a6549213e8d37feb5d708ec98906902","crypto":{"cipher":"aes-128-ctr","ciphertext":"649f5c7def3f345c39dc6f10e5438e179a5f06ff1d9ef2467ff7c84ec94f1a2a","cipherparams":{"iv":"0d66dfbc2c978ed1989e2fca05c16abe"},"kdf":"scrypt","kdfparams":{"dklen":32,"n":262144,"p":1,"r":8,"salt":"547ed9895deda897adbe09058ebfb24fb5036695d490c2127da45c4f7ec9e4a8"},"mac":"db76804c69ceb8705de1a73ae0caf4761bd73c3d42aa43f801c03e7fdda6adff"},"id":"9aaeec2d-d639-425a-83f7-a0956dcc78a1","version":3}`
+const nodeContractAddr = "0xbaEEB7a3AF34a365ACAa1f8464A3374B58ac9889"
+const tokenContractAddr = "0x7B98620bF2A0EDb4De5C941B6F462054C2232114"
 
 type contract struct {
 	keystore string
@@ -22,6 +24,7 @@ type contract struct {
 // Contracter ...
 type Contracter interface {
 	AccelerateNode() (*accelerateNode.AccelerateNode, *bind.TransactOpts, *ethclient.Client)
+	DHToken() (*dhToken.DhToken, *bind.TransactOpts, *ethclient.Client)
 }
 
 // ContractLoader ...
@@ -45,8 +48,33 @@ func (c contract) AccelerateNode() (*accelerateNode.AccelerateNode, *bind.Transa
 	if err != nil {
 		log.Fatal(err)
 	}
-	address := common.HexToAddress(nodeAddr)
+	address := common.HexToAddress(nodeContractAddr)
 	instance, err := accelerateNode.NewAccelerateNode(address, client)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return instance, auth, client
+}
+
+// contract: DHToken init DHToken contract
+func (c contract) DHToken() (*dhToken.DhToken, *bind.TransactOpts, *ethclient.Client) {
+	// TODO
+	auth, err := bind.NewTransactor(strings.NewReader(c.keystore), "123")
+	if err != nil {
+		log.Fatal(err)
+	}
+	// gateway redirect to private chain
+	node, err := general.PathParse("/node")
+	if err != nil {
+		log.Fatal(err)
+	}
+	client, err := ethclient.Dial(node + "/geth.ipc")
+	if err != nil {
+		log.Fatal(err)
+	}
+	address := common.HexToAddress(tokenContractAddr)
+	instance, err := dhToken.NewDhToken(address, client)
 	if err != nil {
 		log.Fatal(err)
 	}
