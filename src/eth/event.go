@@ -2,10 +2,11 @@ package eth
 
 import (
 	"fmt"
-	"signerNode/src/contract/token"
+	"math/big"
+	dhToken "signerNode/src/contract/token"
 
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/common"
 )
 
 // ListenRemotePinEvent listen remote node pin success event
@@ -35,6 +36,12 @@ func ListenRemotePinEvent() {
 			fmt.Println("<--------user-------->", res.Original())
 			fmt.Println("<--------hash-------->", l.Hash)
 			fmt.Println("<--------node-------->", l.Date)
+
+			cl := ContractLoader()
+			dt, auth, client := cl.DHToken()
+			defer client.Close()
+			dt.Transfer(auth, res.Address(), big.NewInt(1))
+
 		}
 	}
 	// TODO: add validation of remote ipfs files
