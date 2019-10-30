@@ -1,20 +1,19 @@
 package main
 
 import (
-	"signerNode/src/eth"
-	"signerNode/src/ipfs"
-	"signerNode/assets"
-	"signerNode/src/sync"
-	"signerNode/src/general"
-	"os"
 	"fmt"
-    "log"
-    "net"
-	"path/filepath"
+	"log"
+	"net"
+	asset "signerNode/assets"
+	"signerNode/src/eth"
+	"signerNode/src/general"
+	"signerNode/src/ipfs"
+	"signerNode/src/sync"
+
 	"github.com/jasonlvhit/gocron"
 )
 
-var udpstart = true;
+var udpstart = true
 
 func main() {
 	// uncompress assets
@@ -33,7 +32,7 @@ func main() {
 	gocron.Every(30).Seconds().Do(sync.IpfsSync)
 	go gocron.Start()
 	// go sync.TokenSync()
-	
+
 	// start udp listening
 	fmt.Println("[Listening UDP Port 6067]")
 	// listener, _ := net.ListenUDP("udp", &net.UDPAddr{IP: net.IPv4zero, Port: 6067})
@@ -49,7 +48,7 @@ func main() {
 
 func listenUDP(listener *net.UDPConn) {
 	fmt.Println("Listening Udp Port...")
-    data := make([]byte, 1024)
+	data := make([]byte, 1024)
 	_, remoteAddr, err := listener.ReadFromUDP(data)
 	if err != nil {
 		fmt.Printf("error during read: %s", err)
@@ -57,22 +56,15 @@ func listenUDP(listener *net.UDPConn) {
 	log.Printf("<remote node mapping rpc address: %s>\n", remoteAddr.String())
 	// sync gateway loadbalance proxy
 	sync.ProxySync(remoteAddr.String())
-    return;
+	return
 }
 
 func restoreAssets() {
 	dirs := []string{"config", "bin", "node"} // 设置需要释放的目录
-	isSuccess := true
 	for _, dir := range dirs {
 		// 解压dir目录到当前目录
 		if err := asset.RestoreAssets("./", dir); err != nil {
-			isSuccess = false
 			break
-		}
-	}
-	if !isSuccess {
-		for _, dir := range dirs {
-			os.RemoveAll(filepath.Join("./", dir))
 		}
 	}
 }

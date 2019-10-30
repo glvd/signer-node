@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	shell "github.com/go-ipfs-restapi-master"
+	shell "github.com/ipfs/go-ipfs-api"
 )
 
 // SwarmConnect add swarm peers
@@ -35,7 +35,7 @@ func BootstrapRmAll() ([]string, error) {
 }
 
 // ID get self node info
-func ID() (*shell.IDOutput, error) {
+func ID() (*shell.IdOutput, error) {
 	sh := shell.NewShell("localhost:5001")
 	resp, err := sh.ID()
 	return resp, err
