@@ -60,8 +60,8 @@ func (e eth) Init() {
 func (e eth) Start() {
 	var sys = runtime.GOOS
 	if sys == "windows" {
-		general.RunCMD(e.binPath, "--datadir", e.nodePath, "--networkid", "20190723", "--rpc", "--rpcaddr", "0.0.0.0", "--rpccorsdomain", "*", "--rpcapi", "eth,web3,admin,net", "--unlock", "54C0fa4a3d982656c51fe7dFBdCc21923a7678cB", "--password", e.nodePath+"/password", "--mine")
+		general.RunCMD(e.binPath, "--datadir", e.nodePath, "--networkid", "20190723", "--rpc", "--rpcaddr", "0.0.0.0", "--rpccorsdomain", "*", "--rpcapi", "db,eth,net,web3,personal,web3", "--unlock", "54C0fa4a3d982656c51fe7dFBdCc21923a7678cB", "--password", e.nodePath+"/password", "--mine")
 	} else {
-		general.RunCMD(e.binPath, "--allow-insecure-unlock", "--datadir", e.nodePath, "--networkid", "20190723", "--rpc", "--rpcaddr", "0.0.0.0", "--rpccorsdomain", "*", "--rpcapi", "eth,web3,admin,net", "--unlock", "54C0fa4a3d982656c51fe7dFBdCc21923a7678cB", "--password", e.nodePath+"/password", "--mine")
+		general.RunCMD(e.binPath, "--allow-insecure-unlock", "--datadir", e.nodePath, "--networkid", "20190723", "--rpc", "--rpcaddr", "0.0.0.0", "--rpccorsdomain", "*", "--rpcapi", "db,eth,net,web3,personal,web3", "--unlock", "54C0fa4a3d982656c51fe7dFBdCc21923a7678cB", "--password", e.nodePath+"/password", "--mine")
 	}
 }

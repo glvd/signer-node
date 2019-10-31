@@ -36,7 +36,6 @@ func ListenRemotePinEvent() {
 			fmt.Println("<--------user-------->", res.Original())
 			fmt.Println("<--------hash-------->", l.Hash)
 			fmt.Println("<--------node-------->", l.Date)
-
 			cl := ContractLoader()
 			dt, auth, client := cl.DHToken()
 			defer client.Close()
