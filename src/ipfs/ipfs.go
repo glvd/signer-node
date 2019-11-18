@@ -8,12 +8,14 @@ import (
 )
 
 type ipfs struct {
-	binPath string
+	binPath   string
+	available bool
 }
 
 // Ipfser ...
 type Ipfser interface {
 	Start()
+	CheckClientReady() bool
 }
 
 // NewIpfs ...
@@ -34,7 +36,7 @@ func NewIpfs() Ipfser {
 	if err != nil {
 		fmt.Println("err is", err.Error())
 	}
-	return &ipfs{bin}
+	return &ipfs{bin, false}
 }
 
 func (i ipfs) Start() {
@@ -47,4 +49,12 @@ func (i ipfs) Start() {
 	general.RunCMD(i.binPath, "config", "Swarm.EnableAutoNATService", "--bool", "true")
 	general.RunCMD(i.binPath, "config", "Swarm.EnableRelayHop", "--bool", "true")
 	general.RunCMD(i.binPath, "daemon", "--routing", "none")
+}
+
+// CheckClientReady check client is ready
+func (i ipfs) CheckClientReady() bool {
+	if !general.CheckPortAvailable("5001") && !general.CheckPortAvailable("4001") {
+		return true
+	}
+	return false
 }

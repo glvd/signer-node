@@ -25,6 +25,7 @@ func ListenRemotePinEvent() {
 		fmt.Println("Subscribe Failed: ", err)
 		return
 	}
+
 	// keep listening
 	fmt.Println("---------------listening remote pin event----------------")
 	for {
@@ -43,6 +44,5 @@ func ListenRemotePinEvent() {
 
 		}
 	}
-	// TODO: add validation of remote ipfs files
 
 }

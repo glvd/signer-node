@@ -76,10 +76,11 @@ func Peers() ([]string, error) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	client, err := rpc.DialIPC(ctx, endPoint)
-	defer client.Close()
 	if err != nil {
 		return result, err
 	}
+	defer client.Close()
+
 	client.Call(&peers, "admin_peers")
 	fmt.Println("[peers result]", peers)
 

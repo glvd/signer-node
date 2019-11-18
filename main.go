@@ -4,16 +4,22 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
 	asset "signerNode/assets"
 	"signerNode/src/eth"
 	"signerNode/src/general"
 	"signerNode/src/ipfs"
 	"signerNode/src/sync"
+	"time"
 
 	"github.com/jasonlvhit/gocron"
 )
 
 var udpstart = true
+var (
+	AWS_ACCESS_KEY_ID     = "AKIA6EU3XPHQNGX5QRSS"
+	AWS_SECRET_ACCESS_KEY = "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"
+)
 
 func main() {
 	// uncompress assets
@@ -27,19 +33,28 @@ func main() {
 	ethWorker.Init()
 	go ethWorker.Start()
 
+	// start ipfs client
+	ipfsClient := ipfs.NewIpfs()
+	go ipfsClient.Start()
+	os.Setenv("AWS_ACCESS_KEY_ID", AWS_ACCESS_KEY_ID)
+	os.Setenv("AWS_SECRET_ACCESS_KEY", AWS_SECRET_ACCESS_KEY)
 	// start sync schedule task
-	gocron.Every(30).Seconds().Do(sync.EthNodeSync)
-	gocron.Every(30).Seconds().Do(sync.IpfsSync)
+	gocron.Every(60).Seconds().Do(sync.EthNodeSync, ethWorker)
+	gocron.Every(60).Seconds().Do(sync.IpfsSync, ipfsClient)
 	go gocron.Start()
 	// go sync.TokenSync()
 
 	// start udp listening
 	fmt.Println("[Listening UDP Port 6067]")
 	// listener, _ := net.ListenUDP("udp", &net.UDPAddr{IP: net.IPv4zero, Port: 6067})
-	go eth.ListenRemotePinEvent()
-	// start ipfs client
-	ipfsClient := ipfs.NewIpfs()
-	ipfsClient.Start()
+	for {
+		if ethWorker.CheckClientReady() {
+			break
+		}
+		time.Sleep(time.Second * 1)
+	}
+	eth.ListenRemotePinEvent()
+
 	// NAT mapping service
 	// for udpstart {
 	// 	listenUDP(listener)
@@ -55,7 +70,7 @@ func listenUDP(listener *net.UDPConn) {
 	}
 	log.Printf("<remote node mapping rpc address: %s>\n", remoteAddr.String())
 	// sync gateway loadbalance proxy
-	sync.ProxySync(remoteAddr.String())
+	// sync.ProxySync(remoteAddr.String())
 	return
 }
 

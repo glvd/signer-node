@@ -10,12 +10,14 @@ type eth struct {
 	genesisPath string
 	nodePath    string
 	binPath     string
+	available   bool
 }
 
 // Ether ...
 type Ether interface {
 	Init()
 	Start()
+	CheckClientReady() bool
 }
 
 var bin string
@@ -45,7 +47,7 @@ func NewEth() Ether {
 		fmt.Println("something is wrong", err)
 	}
 
-	return &eth{genesis, node, bin}
+	return &eth{genesis, node, bin, false}
 }
 
 func (e eth) Init() {
@@ -64,4 +66,12 @@ func (e eth) Start() {
 	} else {
 		general.RunCMD(e.binPath, "--allow-insecure-unlock", "--datadir", e.nodePath, "--networkid", "20190723", "--rpc", "--rpcaddr", "0.0.0.0", "--rpccorsdomain", "*", "--rpcapi", "db,eth,net,web3,personal,web3", "--unlock", "54C0fa4a3d982656c51fe7dFBdCc21923a7678cB", "--password", e.nodePath+"/password", "--mine")
 	}
+}
+
+// CheckClientReady check client is ready
+func (e eth) CheckClientReady() bool {
+	if !general.CheckPortAvailable("30303") {
+		return true
+	}
+	return false
 }
