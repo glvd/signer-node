@@ -3,7 +3,6 @@ package ipfs
 import (
 	"fmt"
 	"os"
-	"runtime"
 	"signerNode/src/general"
 )
 
@@ -20,22 +19,7 @@ type Ipfser interface {
 
 // NewIpfs ...
 func NewIpfs() Ipfser {
-	var sys = runtime.GOOS
-	var bin string
-	var err error
-
-	if sys == "windows" {
-		bin, err = general.PathParse("/bin/ipfs_win.exe")
-	} else if sys == "linux" {
-		bin, err = general.PathParse("/bin/ipfs_linux")
-		general.RunCMD("chmod", "777", bin)
-	} else {
-		fmt.Println("os not match")
-	}
-
-	if err != nil {
-		fmt.Println("err is", err.Error())
-	}
+	var bin = "ipfs"
 	return &ipfs{bin, false}
 }
 

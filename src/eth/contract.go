@@ -6,7 +6,6 @@ import (
 
 	"signerNode/src/contract/accelerateNode"
 	dhToken "signerNode/src/contract/token"
-	"signerNode/src/general"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -40,11 +39,7 @@ func (c contract) AccelerateNode() (*accelerateNode.AccelerateNode, *bind.Transa
 		log.Fatal(err)
 	}
 	// gateway redirect to private chain
-	node, err := general.PathParse("/node")
-	if err != nil {
-		log.Fatal(err)
-	}
-	client, err := ethclient.Dial(node + "/geth.ipc")
+	client, err := ethclient.Dial("/root/.ethereum/geth.ipc")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -65,11 +60,7 @@ func (c contract) DHToken() (*dhToken.DhToken, *bind.TransactOpts, *ethclient.Cl
 		log.Fatal(err)
 	}
 	// gateway redirect to private chain
-	node, err := general.PathParse("/node")
-	if err != nil {
-		log.Fatal(err)
-	}
-	client, err := ethclient.Dial(node + "/geth.ipc")
+	client, err := ethclient.Dial("/root/.ethereum/geth.ipc")
 	if err != nil {
 		log.Fatal(err)
 	}
