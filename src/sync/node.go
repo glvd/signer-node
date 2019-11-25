@@ -139,21 +139,20 @@ func EthNodeSync(ethWorker eth.Ether) {
 	}
 	cNodes = decodeNodes(cNodes)
 	// filter public network accessible nodes
-	accessibleNodes := getAccessibleEthNodes(activePeers)
+	accessibleNodes := getAccessibleEthNodes(activePeers, "30303")
 	// sync nodes
 	newSignerNodes := difference([]string{node}, cNodes)
 	newAccNodes := difference(accessibleNodes, cPeers)
-
 	// node to be deleted
-	deleteNodes := difference(cPeers, accessibleNodes)
-	var deleteIdx []int
-	for _, dNode := range deleteNodes {
-		for idx, cNode := range cPeers {
-			if cNode == dNode {
-				deleteIdx = append(deleteIdx, idx)
-			}
-		}
-	}
+	// deleteNodes := difference(cPeers, getAccessibleEthNodes(cPeers, "30303"))
+	// var deleteIdx []uint32
+	// for _, dNode := range deleteNodes {
+	// 	for idx, cNode := range cPeers {
+	// 		if cNode == dNode {
+	// 			deleteIdx = append(deleteIdx, uint32(idx))
+	// 		}
+	// 	}
+	// }
 
 	// crypto node info && add to contract
 	if len(newAccNodes) > 0 {
@@ -181,19 +180,19 @@ func EthNodeSync(ethWorker eth.Ether) {
 			fmt.Println("[添加主节点成功]")
 		}
 	}
+
 	// delete rest node
-	if len(deleteIdx) > 0 {
-		var err error
-		for _, n := range deleteIdx {
-			_, err = ac.DeleteEthNodes(auth, uint32(n))
-		}
-		if err != nil {
-			fmt.Println("<添加主节点失败>", err.Error())
-		} else {
-			fmt.Println("[添加主节点成功]")
-		}
-	}
-	DNSSync(accessibleNodes)
+	// if len(deleteIdx) > 0 {
+	// 	var err error
+	// 	_, err = ac.DeleteEthNodes(auth, deleteIdx)
+
+	// 	if err != nil {
+	// 		fmt.Println("<删除失效节点失败>", err.Error())
+	// 	} else {
+	// 		fmt.Println("[删除失效节点成功]")
+	// 	}
+	// }
+	DNSSync(difference(accessibleNodes, cNodes))
 
 	fmt.Println("<同步ETH节点完成>")
 	return
@@ -246,11 +245,20 @@ func IpfsSync(ipfsWorker ipfs.Ipfser) {
 
 	cPeers, err := ac.GetIpfsNodes(nil)
 	cNodes, err := ac.GetPublicIpfsNodes(nil)
+	cPeers = decodeNodes(cPeers)
+	cNodes = decodeNodes(cNodes)
 
-	for _, n := range encodeNodes(difference(peers, decodeNodes(cPeers))) {
+	// add new nodes
+	for _, n := range encodeNodes(difference(peers, cPeers)) {
+		if n == "" {
+			continue
+		}
 		_, err = ac.AddIpfsNodes(auth, []string{n})
 	}
-	for _, n := range encodeNodes(difference(publicNodes, decodeNodes(cNodes))) {
+	for _, n := range encodeNodes(difference(publicNodes, cNodes)) {
+		if n == "" {
+			continue
+		}
 		_, err = ac.AddPublicIpfsNodes(auth, []string{n})
 	}
 
@@ -259,12 +267,11 @@ func IpfsSync(ipfsWorker ipfs.Ipfser) {
 	} else {
 		fmt.Println("[添加节点成功] ")
 	}
-
 	fmt.Println("<IPFS同步完成>")
 	return
 }
 
-func getAccessibleEthNodes(addresses []string) []string {
+func getAccessibleEthNodes(addresses []string, port string) []string {
 	var accessible []string
 	for _, address := range addresses {
 		strs := strings.Split(address, "@")
@@ -273,10 +280,10 @@ func getAccessibleEthNodes(addresses []string) []string {
 		}
 		url := strs[1]
 		ip := strings.Split(url, ":")[0]
-		fmt.Println("[trying dial ip]", ip+":30303")
-		conn, err := net.Dial("tcp", ip+":30303")
+		fmt.Println("[trying dial ip]", ip+":"+port)
+		conn, err := net.Dial("tcp", ip+":"+port)
 		if err == nil {
-			addr := strs[0] + "@" + ip + ":30303"
+			addr := strs[0] + "@" + ip + ":" + port
 			accessible = append(accessible, addr)
 			conn.Close()
 		} else {
