@@ -3,6 +3,8 @@ package sync
 import (
 	"fmt"
 	"net"
+	"os"
+	"sort"
 	"strings"
 	"time"
 
@@ -103,20 +105,27 @@ func EthNodeSync(ethWorker eth.Ether) {
 		fmt.Println("<waiting for eth ready>")
 		return
 	}
+
 	// get active nodes
-	activePeers, err := eth.Peers()
+	var activePeers []string
+	peers, err := eth.Peers()
 	if err != nil {
 		fmt.Println("[获取活跃ETH节点失败] ", err.Error())
 	} else {
 		fmt.Println("[当前活跃ETH节点数] ", len(activePeers))
 	}
+	for _, peer := range peers {
+		activePeers = append(activePeers, peer.Enode)
+	}
+
 	// get self node info
 	nodeInfo, err := eth.NodeInfo()
 	if err != nil {
 		fmt.Println("[获取本节点信息失败] ", err.Error())
 	}
 	node := nodeInfo.Enode
-
+	ip := os.Getenv("IP")
+	node = strings.Split(node, "@")[0] + "@" + ip + ":30303"
 	// init contract
 	cl := eth.ContractLoader()
 	ac, auth, client := cl.AccelerateNode()
@@ -130,6 +139,7 @@ func EthNodeSync(ethWorker eth.Ether) {
 		fmt.Println("[合约已有节点数]", len(cPeers))
 	}
 	cPeers = decodeNodes(cPeers)
+	fmt.Println("[cPeers]", cPeers)
 	// get decoded contract signer nodes
 	cNodes, err := ac.GetSignerNodes(nil)
 	if err != nil {
@@ -138,32 +148,49 @@ func EthNodeSync(ethWorker eth.Ether) {
 		fmt.Println("[合约已有主节点数]", len(cNodes))
 	}
 	cNodes = decodeNodes(cNodes)
+	fmt.Println("[cNodes]", cNodes)
 	// filter public network accessible nodes
 	accessibleNodes := getAccessibleEthNodes(activePeers, "30303")
 	// sync nodes
 	newSignerNodes := difference([]string{node}, cNodes)
 	newAccNodes := difference(accessibleNodes, cPeers)
 	// node to be deleted
-	// deleteNodes := difference(cPeers, getAccessibleEthNodes(cPeers, "30303"))
-	// var deleteIdx []uint32
-	// for _, dNode := range deleteNodes {
-	// 	for idx, cNode := range cPeers {
-	// 		if cNode == dNode {
-	// 			deleteIdx = append(deleteIdx, uint32(idx))
-	// 		}
-	// 	}
-	// }
+	deleteNodes := difference(cPeers, getAccessibleEthNodes(cPeers, "30303"))
+	var deleteIdx []int
+	for _, dNode := range deleteNodes {
+		for idx, cNode := range cPeers {
+			if cNode == dNode {
+				deleteIdx = append(deleteIdx, idx)
+			}
+		}
+	}
+
+	// delete rest node
+	if len(deleteIdx) > 0 {
+		var err error
+		sort.Sort(sort.Reverse(sort.IntSlice(deleteIdx)))
+		for _, idx := range deleteIdx {
+			_, err = ac.DeleteEthNodes(auth, uint32(idx))
+		}
+
+		if err != nil {
+			fmt.Println("<删除失效节点失败>", err.Error())
+		} else {
+			fmt.Println("[删除失效节点成功]")
+		}
+	}
 
 	// crypto node info && add to contract
 	if len(newAccNodes) > 0 {
 		var err error
+		fmt.Println("[adding node]", newAccNodes)
 		for _, n := range encodeNodes(newAccNodes) {
 			_, err = ac.AddEthNodes(auth, []string{n})
 		}
 		if err != nil {
-			fmt.Println("[添加节点失败]", err.Error())
+			fmt.Println("[add node failed]", err.Error())
 		} else {
-			fmt.Println("[添加节点成功]")
+			fmt.Println("[add node success]")
 		}
 		// update gateway info
 	} else {
@@ -172,7 +199,7 @@ func EthNodeSync(ethWorker eth.Ether) {
 
 	// add signer nodes
 	if len(newSignerNodes) > 0 {
-
+		fmt.Println("[adding signer node]", newSignerNodes)
 		_, err := ac.AddSignerNodes(auth, encodeNodes(newSignerNodes))
 		if err != nil {
 			fmt.Println("<添加主节点失败>", err.Error())
@@ -181,17 +208,6 @@ func EthNodeSync(ethWorker eth.Ether) {
 		}
 	}
 
-	// delete rest node
-	// if len(deleteIdx) > 0 {
-	// 	var err error
-	// 	_, err = ac.DeleteEthNodes(auth, deleteIdx)
-
-	// 	if err != nil {
-	// 		fmt.Println("<删除失效节点失败>", err.Error())
-	// 	} else {
-	// 		fmt.Println("[删除失效节点成功]")
-	// 	}
-	// }
 	DNSSync(difference(accessibleNodes, cNodes))
 
 	fmt.Println("<同步ETH节点完成>")
@@ -248,6 +264,32 @@ func IpfsSync(ipfsWorker ipfs.Ipfser) {
 	cPeers = decodeNodes(cPeers)
 	cNodes = decodeNodes(cNodes)
 
+	fmt.Println("[adding ipfs nodes]", difference(peers, cPeers))
+	fmt.Println("[adding public ipfs nodes]", difference(publicNodes, cNodes))
+	// delete nodes
+	var deleteIdx []int
+	for _, dNode := range difference(cNodes, getAccessibleIpfsNodes(cNodes, "4001")) {
+		for idx, cNode := range cNodes {
+			if cNode == dNode {
+				deleteIdx = append(deleteIdx, idx)
+			}
+		}
+	}
+
+	if len(deleteIdx) > 0 {
+		var err error
+		sort.Sort(sort.Reverse(sort.IntSlice(deleteIdx)))
+		for _, idx := range deleteIdx {
+			_, err = ac.DeletePublicIpfsNodes(auth, uint32(idx))
+		}
+
+		if err != nil {
+			fmt.Println("<删除失效节点失败>", err.Error())
+		} else {
+			fmt.Println("[删除失效节点成功]")
+		}
+	}
+
 	// add new nodes
 	for _, n := range encodeNodes(difference(peers, cPeers)) {
 		if n == "" {
@@ -294,11 +336,37 @@ func getAccessibleEthNodes(addresses []string, port string) []string {
 	return accessible
 }
 
+func getAccessibleIpfsNodes(addresses []string, port string) []string {
+	var accessible []string
+	for _, address := range addresses {
+		strs := strings.Split(address, "/ip4/")
+		if len(strs) < 2 {
+			continue
+		}
+		ip := strings.Split(strs[1], "/")[0]
+		if len(ip) < 8 {
+			continue
+		}
+		conn, err := net.Dial("tcp", ip+":"+port)
+		if err == nil {
+			addr := strs[0] + "@" + ip + ":" + port
+			accessible = append(accessible, addr)
+			conn.Close()
+		} else {
+			fmt.Println("[dial err]", err)
+		}
+
+	}
+	return accessible
+}
+
 func decodeNodes(nodes []string) []string {
 	// init contract
 	var decodeNodes []string
 	decoder := dhcrypto.NewCipherDecode([]byte(priKey), dateKey)
-
+	if len(nodes) == 0 {
+		return decodeNodes
+	}
 	for _, node := range nodes {
 		decoded, err := decoder.Decode(node)
 		if err != nil {
@@ -311,7 +379,7 @@ func decodeNodes(nodes []string) []string {
 
 func encodeNodes(nodes []string) []string {
 	var encodedNodes []string
-	encoder := dhcrypto.NewCipherEncoder([]byte(pubKey), 10, time.Now())
+	encoder := dhcrypto.NewCipherEncoder([]byte(pubKey), 10, dateKey)
 	for _, node := range nodes {
 		encoded, err := encoder.Encode(node)
 		if err != nil {

@@ -3,7 +3,6 @@ package eth
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/ethereum/go-ethereum/rpc"
 )
@@ -70,28 +69,27 @@ func AddPeer(urls []string) error {
 }
 
 // Peers ...
-func Peers() ([]string, error) {
+func Peers() ([]Peer, error) {
 	var peers []Peer
-	var result []string
+	var res []Peer
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	client, err := rpc.DialIPC(ctx, endPoint)
 	if err != nil {
-		return result, err
+		return res, err
 	}
 	defer client.Close()
 
 	client.Call(&peers, "admin_peers")
-	fmt.Println("[peers result]", peers)
 
 	for _, peer := range peers {
 		v, _ := peer.Protocols.(map[string]interface{})
 		_, ok := v["eth"].(string)
 		if ok == false {
-			result = append(result, peer.Enode)
+			res = append(res, peer)
 		}
 	}
-	return result, nil
+	return res, nil
 }
 
 // NodeInfo ...

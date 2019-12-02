@@ -1,16 +1,16 @@
 [
 	{
-		"constant": true,
-		"inputs": [],
-		"name": "getPublicIpfsNodes",
-		"outputs": [
+		"constant": false,
+		"inputs": [
 			{
-				"name": "",
+				"name": "nodes",
 				"type": "string[]"
 			}
 		],
+		"name": "addEthNodes",
+		"outputs": [],
 		"payable": false,
-		"stateMutability": "view",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -21,7 +21,118 @@
 				"type": "string[]"
 			}
 		],
-		"name": "addEthNodes",
+		"name": "addIpfsNodes",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "nodes",
+				"type": "string[]"
+			}
+		],
+		"name": "addPublicIpfsNodes",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "nodes",
+				"type": "string[]"
+			}
+		],
+		"name": "addSignerNodes",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "idx",
+				"type": "uint32"
+			}
+		],
+		"name": "deleteEthNodes",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "idx",
+				"type": "uint32"
+			}
+		],
+		"name": "deleteIpfsNodes",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "idx",
+				"type": "uint32"
+			}
+		],
+		"name": "deletePublicIpfsNodes",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "idx",
+				"type": "uint32"
+			}
+		],
+		"name": "deleteSignerNodes",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "renounceOwnership",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "enode",
+				"type": "string"
+			},
+			{
+				"name": "idx",
+				"type": "uint32"
+			}
+		],
+		"name": "replaceNode",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -38,17 +149,61 @@
 	},
 	{
 		"constant": false,
-		"inputs": [
-			{
-				"name": "idxs",
-				"type": "uint32[]"
-			}
-		],
-		"name": "deleteIpfsNodes",
+		"inputs": [],
+		"name": "resetIpfsNode",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "resetPublicIpfsNode",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "resetSignerNode",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"name": "previousOwner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "OwnershipTransferred",
+		"type": "event"
 	},
 	{
 		"constant": true,
@@ -93,45 +248,27 @@
 		"type": "function"
 	},
 	{
-		"constant": false,
+		"constant": true,
 		"inputs": [],
-		"name": "renounceOwnership",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
+		"name": "getPublicIpfsNodes",
+		"outputs": [
 			{
-				"name": "nodes",
+				"name": "",
 				"type": "string[]"
 			}
 		],
-		"name": "addPublicIpfsNodes",
-		"outputs": [],
 		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [],
-		"name": "resetSignerNode",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
 		"constant": true,
 		"inputs": [],
-		"name": "owner",
+		"name": "getSignerNodes",
 		"outputs": [
 			{
 				"name": "",
-				"type": "address"
+				"type": "string[]"
 			}
 		],
 		"payable": false,
@@ -153,159 +290,17 @@
 		"type": "function"
 	},
 	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "idxs",
-				"type": "uint32[]"
-			}
-		],
-		"name": "deleteEthNodes",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [],
-		"name": "resetPublicIpfsNode",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "enode",
-				"type": "string"
-			},
-			{
-				"name": "idx",
-				"type": "uint32"
-			}
-		],
-		"name": "replaceNode",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "idxs",
-				"type": "uint32[]"
-			}
-		],
-		"name": "deletePublicIpfsNodes",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "nodes",
-				"type": "string[]"
-			}
-		],
-		"name": "addSignerNodes",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "data",
-				"type": "uint32[]"
-			}
-		],
-		"name": "sort",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint32[]"
-			}
-		],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [],
-		"name": "resetIpfsNode",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "newOwner",
-				"type": "address"
-			}
-		],
-		"name": "transferOwnership",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"constant": true,
 		"inputs": [],
-		"name": "getSignerNodes",
+		"name": "owner",
 		"outputs": [
 			{
 				"name": "",
-				"type": "string[]"
+				"type": "address"
 			}
 		],
 		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "nodes",
-				"type": "string[]"
-			}
-		],
-		"name": "addIpfsNodes",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"name": "previousOwner",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"name": "newOwner",
-				"type": "address"
-			}
-		],
-		"name": "OwnershipTransferred",
-		"type": "event"
 	}
 ]

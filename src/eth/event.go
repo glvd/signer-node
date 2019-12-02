@@ -31,7 +31,9 @@ func ListenRemotePinEvent() {
 	for {
 		select {
 		case err := <-subs.Err():
-			fmt.Println("sub error", err) // Error
+			if err != nil {
+				fmt.Println("watch event error", err.Error()) // Error
+			}
 		case l := <-eventCh:
 			res := common.NewMixedcaseAddress(l.User)
 			fmt.Println("<--------user-------->", res.Original())
