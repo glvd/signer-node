@@ -1,6 +1,7 @@
 package sync
 
 import (
+	"encoding/json"
 	"fmt"
 	"net"
 	"os"
@@ -98,6 +99,18 @@ var (
 	dateKey = time.Date(2019, time.November, 11, 10, 20, 10, 300, time.Local)
 )
 
+// EthProtocal ...
+type EthProtocal struct {
+	Eth Protocal `json:"eth"`
+}
+
+// Protocal ...
+type Protocal struct {
+	Difficulty int    `json:"difficulty"`
+	Head       string `json:"head"`
+	Version    int    `json:"version"`
+}
+
 // EthNodeSync get active nodes add them to the contract
 func EthNodeSync(ethWorker eth.Ether) {
 	fmt.Println("<同步ETH节点中...>")
@@ -105,6 +118,18 @@ func EthNodeSync(ethWorker eth.Ether) {
 		fmt.Println("<waiting for eth ready>")
 		return
 	}
+
+	// get self node info
+	nodeInfo, err := eth.NodeInfo()
+	if err != nil {
+		fmt.Println("[获取本节点信息失败] ", err.Error())
+	}
+	node := nodeInfo.Enode
+	jsonString, _ := json.Marshal(nodeInfo.Protocols)
+	var nodeProtocal EthProtocal
+	json.Unmarshal([]byte(jsonString), &nodeProtocal)
+	ip := os.Getenv("IP")
+	node = strings.Split(node, "@")[0] + "@" + ip + ":30303"
 
 	// get active nodes
 	var activePeers []string
@@ -115,17 +140,16 @@ func EthNodeSync(ethWorker eth.Ether) {
 		fmt.Println("[当前活跃ETH节点数] ", len(activePeers))
 	}
 	for _, peer := range peers {
-		activePeers = append(activePeers, peer.Enode)
+		jsStr, _ := json.Marshal(peer.Protocols)
+		var peerProtocal EthProtocal
+		json.Unmarshal([]byte(jsStr), &peerProtocal)
+		fmt.Println("peer diffculty", peerProtocal.Eth.Difficulty)
+		// check if peers had enough blocks
+		if float64(peerProtocal.Eth.Difficulty)/float64(nodeProtocal.Eth.Difficulty) > 0.9 {
+			activePeers = append(activePeers, peer.Enode)
+		}
 	}
 
-	// get self node info
-	nodeInfo, err := eth.NodeInfo()
-	if err != nil {
-		fmt.Println("[获取本节点信息失败] ", err.Error())
-	}
-	node := nodeInfo.Enode
-	ip := os.Getenv("IP")
-	node = strings.Split(node, "@")[0] + "@" + ip + ":30303"
 	// init contract
 	cl := eth.ContractLoader()
 	ac, auth, client := cl.AccelerateNode()
