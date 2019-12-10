@@ -2,27 +2,25 @@ package sync
 
 import (
 	"fmt"
+	"signerNode/src/aws"
 	"signerNode/src/general"
 	"strings"
-
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/route53"
 )
 
 const (
-	HostedZoneID = "ZULHCRKQ5YDLC"
-	RecordName   = "gate.dhash.app"
+	// test
+	HostedZoneID = "Z2D12816OG1BTZ"
+	RecordName   = "gate.betabb.space"
+	// HostedZoneID = "ZULHCRKQ5YDLC"
+	// RecordName   = "gate.dhash.app"
 )
 
 // DNSSync ...
-func DNSSync(remoteNodes []string) {
-	fmt.Println("<更新网关数据中...>", remoteNodes)
+func DNSSync(nodes []string) {
 	defer fmt.Println("<更新网关数据完成...>")
 	var records []string
-
 	// build node records
-	for _, node := range remoteNodes {
+	for _, node := range nodes {
 		if !strings.Contains(node, "enode") {
 			continue
 		}
@@ -31,109 +29,51 @@ func DNSSync(remoteNodes []string) {
 		ip := strings.Split(uri, ":")[0]
 		records = append(records, ip)
 	}
+	fmt.Println("<更新网关数据中...>", records)
+
 	if len(records) == 0 {
 		return
 	}
+	dnsService := aws.NewRoute53()
 
 	// get remote dns record
-	remoteRecords, err := getRemoteDNSRecords()
+	var remoteIPs []string
+	remoteRecordSets, err := dnsService.GetRecordSets()
 	if err != nil {
 		fmt.Println("<访问远端网关失败> ", err.Error())
 		return
 	}
-	// remove duplicate ip
-	ipAdd := removeDuplicateElement(general.DiffStrArray(records, remoteRecords))
-	ipDelete := removeDuplicateElement(general.DiffStrArray(remoteNodes, records))
-	addDNSRecords(ipAdd)
-	deleteDNSRecords(ipDelete)
-	return
-}
-
-func addDNSRecords(records []string) {
-	var awsRecords []*route53.ResourceRecord
-	client := route53.New(session.New())
-
-	for _, ip := range records {
-		awsRecord := &route53.ResourceRecord{Value: aws.String(ip)}
-		awsRecords = append(awsRecords, awsRecord)
-	}
-	changeInput := &route53.ChangeResourceRecordSetsInput{
-		ChangeBatch: &route53.ChangeBatch{
-			Changes: []*route53.Change{
-				{
-					Action: aws.String("UPSERT"),
-					ResourceRecordSet: &route53.ResourceRecordSet{
-						Name:            aws.String(RecordName),
-						ResourceRecords: awsRecords,
-						TTL:             aws.Int64(60),
-						Type:            aws.String("A"),
-					},
-				},
-			},
-			Comment: aws.String("gateway"),
-		},
-		HostedZoneId: aws.String(HostedZoneID),
-	}
-	res, err := client.ChangeResourceRecordSets(changeInput)
-	if err != nil {
-		return
-	}
-	fmt.Println("<添加网关记录成功>", res)
-}
-
-func deleteDNSRecords(records []string) {
-	var awsRecords []*route53.ResourceRecord
-	client := route53.New(session.New())
-
-	for _, ip := range records {
-		awsRecord := &route53.ResourceRecord{Value: aws.String(ip)}
-		awsRecords = append(awsRecords, awsRecord)
-	}
-	changeInput := &route53.ChangeResourceRecordSetsInput{
-		ChangeBatch: &route53.ChangeBatch{
-			Changes: []*route53.Change{
-				{
-					Action: aws.String("DELETE"),
-					ResourceRecordSet: &route53.ResourceRecordSet{
-						Name:            aws.String(RecordName),
-						ResourceRecords: awsRecords,
-						Type:            aws.String("A"),
-					},
-				},
-			},
-			Comment: aws.String("gateway"),
-		},
-		HostedZoneId: aws.String(HostedZoneID),
-	}
-	res, err := client.ChangeResourceRecordSets(changeInput)
-	if err != nil {
-		return
-	}
-	fmt.Println("<删除网关记录成功>", res)
-}
-
-func getRemoteDNSRecords() ([]string, error) {
-	var remoteRecords []string
-	client := route53.New(session.New())
-	recordSetsInput := &route53.ListResourceRecordSetsInput{
-		HostedZoneId:    aws.String(HostedZoneID),
-		StartRecordName: aws.String(RecordName),
-	}
-	sets, err := client.ListResourceRecordSets(recordSetsInput)
-	if err != nil {
-		fmt.Println("[get record sets failed]", err.Error())
-		return remoteRecords, err
-	}
-	if len(sets.ResourceRecordSets) != 0 {
-		for _, record := range sets.ResourceRecordSets[0].ResourceRecords {
-			remoteRecords = append(remoteRecords, *record.Value)
+	if len(remoteRecordSets) != 0 {
+		for _, recordSet := range remoteRecordSets {
+			remoteIPs = append(remoteIPs, *recordSet.ResourceRecords[0].Value)
 		}
 	}
-	return remoteRecords, nil
-}
+	// add new record
+	ipAdd := removeDuplicateElement(general.DiffStrArray(records, remoteIPs))
+	fmt.Println("[resource to be added]", ipAdd)
+	setsAdd := dnsService.BuildMultiValueRecordSets(ipAdd)
+	if len(setsAdd) > 0 {
+		res, err := dnsService.ChangeSets(setsAdd, "UPSERT")
+		if err != nil {
+			fmt.Println("[add resource record fail]", err.Error())
+		} else {
+			fmt.Println("[add resource record success]", res.String())
+		}
+	}
 
-func createDNSHealthCheck(ip string) {
+	// delete record out of date
+	failedSets := dnsService.FilterFailedRecords(remoteRecordSets)
+	fmt.Println("[resource to be deleted]", len(failedSets))
+	if len(failedSets) > 0 {
+		res, err := dnsService.ChangeSets(failedSets, "DELETE")
+		if err != nil {
+			fmt.Println("[delete resource record fail]", err.Error())
+		} else {
+			fmt.Println("[delete resource record success]", res.String())
+		}
+	}
 
+	return
 }
 
 func removeDuplicateElement(addrs []string) []string {

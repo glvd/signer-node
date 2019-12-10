@@ -39,8 +39,8 @@ func (c contract) AccelerateNode() (*accelerateNode.AccelerateNode, *bind.Transa
 		log.Fatal(err)
 	}
 	// gateway redirect to private chain
-	client, err := ethclient.Dial("http://gate.dhash.app:8545")
-	// client, err := ethclient.Dial("/root/.ethereum/geth.ipc")
+	// client, err := ethclient.Dial("http://gate.betabb.space:8545")
+	client, err := ethclient.Dial("/root/.ethereum/geth.ipc")
 	if err != nil {
 		log.Fatal(err)
 	}

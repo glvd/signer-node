@@ -1,10 +1,12 @@
 package sync
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net"
 	"os"
+	"os/exec"
 	"sort"
 	"strings"
 	"time"
@@ -175,6 +177,7 @@ func EthNodeSync(ethWorker eth.Ether) {
 	fmt.Println("[cNodes]", cNodes)
 	// filter public network accessible nodes
 	accessibleNodes := getAccessibleEthNodes(activePeers, "30303")
+	// cDifference := difference(cPeers, accessibleNodes)
 	// sync nodes
 	newSignerNodes := difference([]string{node}, cNodes)
 	newAccNodes := difference(accessibleNodes, cPeers)
@@ -346,15 +349,15 @@ func getAccessibleEthNodes(addresses []string, port string) []string {
 		}
 		url := strs[1]
 		ip := strings.Split(url, ":")[0]
-		fmt.Println("[trying dial ip]", ip+":"+port)
-		conn, err := net.Dial("tcp", ip+":"+port)
-		if err == nil {
+
+		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+		cmd := exec.CommandContext(ctx, "nc", "-vz", ip, port)
+		cmd.Start()
+		if err := cmd.Wait(); err == nil {
 			addr := strs[0] + "@" + ip + ":" + port
 			accessible = append(accessible, addr)
-			conn.Close()
-		} else {
-			fmt.Println("[dial err]", err)
 		}
+		cancel()
 
 	}
 	return accessible
@@ -371,7 +374,7 @@ func getAccessibleIpfsNodes(addresses []string, port string) []string {
 		if len(ip) < 8 {
 			continue
 		}
-		conn, err := net.Dial("tcp", ip+":"+port)
+		conn, err := net.DialTimeout("tcp", ip+":"+port, 3*time.Second)
 		if err == nil {
 			addr := strs[0] + "@" + ip + ":" + port
 			accessible = append(accessible, addr)

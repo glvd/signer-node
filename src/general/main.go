@@ -1,6 +1,8 @@
 package general
 
 import (
+	"crypto/rand"
+	"fmt"
 	"net"
 )
 
@@ -27,4 +29,14 @@ func DiffStrArray(a, b []string) []string {
 		}
 	}
 	return diff
+}
+
+// GenerateRandomString return 2 * l long random string
+func GenerateRandomString(l int) string {
+	b := make([]byte, l)
+	if _, err := rand.Read(b); err != nil {
+		panic(err)
+	}
+	s := fmt.Sprintf("%X", b)
+	return s
 }
